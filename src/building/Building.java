@@ -189,6 +189,44 @@ public class Building implements BuildingInterface {
       throw new IllegalStateException("Elevator system not accepting requests.");
     }
   }
+
+  /**
+   * This method is used to step the elevator system.
+   */
+  @Override
+  public void stepElevatorSystem() {
+    if (this.elevatorsStatus != ElevatorSystemStatus.outOfService) {
+      if (this.elevatorsStatus != ElevatorSystemStatus.stopping) {
+        this.distributeRequests();
+      }
+    }
+
+    ElevatorInterface[] variable1 = this.elevators;
+    int variable2 = variable1.length;
+
+    for (int variable3 = 0; variable3 < variable2; ++variable3) {
+      ElevatorInterface elevator = variable1[variable3];
+      elevator.step();
+    }
+
+    if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
+      boolean allElevatorsOnGroundFloor = true;
+      ElevatorInterface[] variable4 = this.elevators;
+      int variable5 = variable4.length;
+
+      for (int variable6 = 0; variable6 < variable5; ++variable6) {
+        ElevatorInterface elevator = variable4[variable6];
+        if (elevator.getCurrentFloor() != 0) {
+          allElevatorsOnGroundFloor = false;
+          break;
+        }
+      }
+
+      if (allElevatorsOnGroundFloor) {
+        this.elevatorsStatus = ElevatorSystemStatus.outOfService;
+      }
+    }
+  }
 }
 
 
