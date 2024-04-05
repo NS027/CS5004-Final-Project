@@ -31,6 +31,14 @@ public interface BuildingInterface {
    */
   void stopElevatorSystem();
 
+  /**
+   * This method is used to get the fool number of the building.
+   *
+   * @return the number of floors in the building.
+   */
+  int getNumberOfFloors();
+
+
 
 
 }
