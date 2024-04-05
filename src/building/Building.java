@@ -59,8 +59,6 @@ public class Building implements BuildingInterface {
     System.out.println("numberOfFloors: " + numberOfFloors);
     System.out.println("numberOfElevators: " + numberOfElevators);
     System.out.println("elevatorCapacity: " + elevatorCapacity);
-
-    System.out.println("\n\nYet to be built.");
   }
 
   /**
@@ -79,6 +77,7 @@ public class Building implements BuildingInterface {
           ElevatorInterface elevator = variable1[variable3];
           elevator.start();
         }
+        this.elevatorsStatus = ElevatorSystemStatus.running;
       }
     }
   }
@@ -166,8 +165,8 @@ public class Building implements BuildingInterface {
         && this.elevatorsStatus != ElevatorSystemStatus.stopping) {
       if (request == null) {
         throw new IllegalArgumentException("Request cannot be null");
-      } else if (request.getStartFloor() >0 && request.getEndFloor() < this.numberOfElevators) {
-        if (request.getEndFloor() >0 && request.getEndFloor() < this.numberOfElevators) {
+      } else if (request.getStartFloor() >= 0 && request.getStartFloor() < this.numberOfFloors) {
+        if (request.getEndFloor() >= 0 && request.getEndFloor() < this.numberOfFloors) {
           if (request.getStartFloor() == request.getEndFloor()) {
             throw new IllegalArgumentException("Start floor and end floor cannot be the same");
           } else {
@@ -233,11 +232,11 @@ public class Building implements BuildingInterface {
    */
   private void distributeRequests() {
     if (!this.upRequests.isEmpty() || !this.downRequests.isEmpty()) {
-      ElevatorInterface[] var1 = this.elevators;
-      int var2 = var1.length;
+      ElevatorInterface[] variable1 = this.elevators;
+      int variable2 = variable1.length;
 
-      for (int var3 = 0; var3 < var2; ++var3) {
-        ElevatorInterface elevator = var1[var3];
+      for (int variable3 = 0; variable3 < variable2; ++variable3) {
+        ElevatorInterface elevator = variable1[variable3];
         if (elevator.isTakingRequests()) {
           List<Request> downRequestsForElevator;
           if (elevator.getCurrentFloor() == 0) {
@@ -261,7 +260,7 @@ public class Building implements BuildingInterface {
   private List<Request> getRequests(List<Request> requests) {
     List<Request> requestsForElevator = new ArrayList<>();
     while (!requests.isEmpty() && requestsForElevator.size() < this.elevatorCapacity) {
-      requestsForElevator.add(requests.removeFirst());
+      requestsForElevator.add(requests.remove(0));
     }
 
     return requestsForElevator;
