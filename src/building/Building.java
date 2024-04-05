@@ -53,17 +53,17 @@ public class Building implements BuildingInterface {
 
       this.elevatorsStatus = ElevatorSystemStatus.outOfService;
 
-      System.out.println("Building constructor called");
-      System.out.println("numberOfFloors: " + numberOfFloors);
-      System.out.println("numberOfElevators: " + numberOfElevators);
-      System.out.println("elevatorCapacity: " + elevatorCapacity);
-
-      System.out.println("\n\nYet to be built.");
     }
 
+    System.out.println("Building constructor called");
+    System.out.println("numberOfFloors: " + numberOfFloors);
+    System.out.println("numberOfElevators: " + numberOfElevators);
+    System.out.println("elevatorCapacity: " + elevatorCapacity);
 
-
+    System.out.println("\n\nYet to be built.");
   }
+
+
 }
 
 
