@@ -103,6 +103,36 @@ public class Building implements BuildingInterface {
     }
   }
 
+  /**
+   * This method is used to get the number of floors in the building.
+   *
+   * @return the number of floors in the building
+   */
+  @Override
+  public int getNumberOfFloors() {
+    return this.numberOfFloors;
+  }
+
+  /**
+   * This method is used to get the number of elevators in the building.
+   *
+   * @return the number of elevators in the building
+   */
+  @Override
+  public int getNumberOfElevators() {
+    return this.numberOfElevators;
+  }
+
+  /**
+   * This method is used to get the capacity of the elevators in the building.
+   *
+   * @return the capacity of the elevators in the building
+   */
+  @Override
+  public int getElevatorCapacity() {
+    return this.elevatorCapacity;
+  }
+
 }
 
 
