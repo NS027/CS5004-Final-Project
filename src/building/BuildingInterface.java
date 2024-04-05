@@ -38,6 +38,13 @@ public interface BuildingInterface {
    */
   int getNumberOfFloors();
 
+  /**
+   * This method is used to get the number of elevators in the building.
+   *
+   * @return the number of elevators in the building.
+   */
+  int getNumberOfElevators();
+
 
 
 
