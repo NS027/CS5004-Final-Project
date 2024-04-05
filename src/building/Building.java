@@ -68,8 +68,8 @@ public class Building implements BuildingInterface {
    */
   @Override
   public void startElevatorSystem() {
-    if (this.elevatorStatus != ElevatorSystemStatus.running) {
-      if (this.elevatorStatus == ElevatorSystemStatus.stopping) {
+    if (this.elevatorsStatus != ElevatorSystemStatus.running) {
+      if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
         throw new IllegalStateException("Elevator cannot be started until it is stopped");
       } else {
         ElevatorInterface [] variable1 = this.elevators;
@@ -79,6 +79,26 @@ public class Building implements BuildingInterface {
           ElevatorInterface elevator = variable1[variable3];
           elevator.start();
         }
+      }
+    }
+  }
+
+  /**
+   * This method is used to stop the elevator system.
+   */
+  @Override
+  public void stopElevatorSystem() {
+    if (this.elevatorsStatus != ElevatorSystemStatus.outOfService
+        && this.elevatorsStatus != ElevatorSystemStatus.stopping) {
+      ElevatorInterface [] variable1 = this.elevators;
+      int variable2 = variable1.length;
+
+      for (int variable3 = 0; variable3 < variable2; ++variable3) {
+        ElevatorInterface elevator = variable1[variable3];
+        elevator.takeOutOfService();
+        this.elevatorsStatus = ElevatorSystemStatus.stopping;
+        this.upRequests.clear();
+        this.downRequests.clear();
       }
     }
   }
