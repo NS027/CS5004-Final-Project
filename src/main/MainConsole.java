@@ -2,6 +2,7 @@ package main;
 
 import java.util.Scanner;
 import building.Building;
+import scanerzus.Request;
 
 /**
  * The driver for the elevator system.
@@ -47,6 +48,47 @@ public class MainConsole {
     scanner.nextLine();
 
     Building building = new Building(numFloors, numElevators, numPeople);
+
+    System.out.println("Elevator System Is Initialized.");
+
+    while (true) {
+      System.out.println("Enter your command: (start/stop/step/request/status/quit): \n");
+      String command = scanner.nextLine();
+
+      switch(command) {
+        case "start":
+          building.startElevatorSystem();
+          System.out.println("Elevator System Is Started.");
+          break;
+        case "stop":
+          building.stopElevatorSystem();
+          System.out.println("Elevator System Is Stopped.");
+          break;
+         case "step":
+          building.stepElevatorSystem();
+          System.out.println("Elevator System performed Stepped.");
+          System.out.println(building.getStatusElevatorSystem().toString());
+          break;
+        case "request":
+          System.out.println("Enter the from floor:");
+          int fromFloor = scanner.nextInt();
+          System.out.println("Enter the to floor:");
+          int toFloor = scanner.nextInt();
+          building.addRequestToElevatorSystem(new Request(fromFloor, toFloor));
+          System.out.println("Request from floor " + fromFloor
+              + " to floor " + toFloor + " is added.");
+          break;
+        case "status":
+          System.out.println(building.getStatusElevatorSystem().toString());
+          break;
+        case "quit":
+          System.exit(0);
+          break;
+        default:
+          System.out.println("Invalid Command. Please try again.");
+          break;
+      }
+    }
 
 
 
