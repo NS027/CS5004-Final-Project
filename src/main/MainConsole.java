@@ -1,7 +1,7 @@
 package main;
 
-import java.util.Scanner;
 import building.Building;
+import java.util.Scanner;
 import scanerzus.Request;
 
 /**
@@ -55,7 +55,7 @@ public class MainConsole {
       System.out.println("Enter your command: (start/stop/step/request/status/quit): \n");
       String command = scanner.nextLine();
 
-      switch(command) {
+      switch (command) {
         case "start":
           building.startElevatorSystem();
           System.out.println("Elevator System Is Started.");
@@ -64,7 +64,7 @@ public class MainConsole {
           building.stopElevatorSystem();
           System.out.println("Elevator System Is Stopped.");
           break;
-         case "step":
+        case "step":
           building.stepElevatorSystem();
           System.out.println("Elevator System performed Stepped.");
           System.out.println(building.getStatusElevatorSystem().toString());
@@ -89,11 +89,5 @@ public class MainConsole {
           break;
       }
     }
-
-
-
-
   }
-
-
 }
