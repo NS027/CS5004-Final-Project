@@ -21,4 +21,16 @@ public interface BuildingInterface {
    */
   void addRequestToElevatorSystem(Request variable1);
 
+  /**
+   * This method is used to start the elevator system.
+   */
+  void startElevatorSystem();
+
+  /**
+   * This method is used to stop the elevator system.
+   */
+  void stopElevatorSystem();
+
+
+
 }
