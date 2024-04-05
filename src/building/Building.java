@@ -63,6 +63,25 @@ public class Building implements BuildingInterface {
     System.out.println("\n\nYet to be built.");
   }
 
+  /**
+   * This method is used to start the elevator system.
+   */
+  @Override
+  public void startElevatorSystem() {
+    if (this.elevatorStatus != ElevatorSystemStatus.running) {
+      if (this.elevatorStatus == ElevatorSystemStatus.stopping) {
+        throw new IllegalStateException("Elevator cannot be started until it is stopped");
+      } else {
+        ElevatorInterface [] variable1 = this.elevators;
+        int variable2 = variable1.length;
+
+        for (int variable3 = 0; variable3 < variable2; ++variable3) {
+          ElevatorInterface elevator = variable1[variable3];
+          elevator.start();
+        }
+      }
+    }
+  }
 
 }
 
