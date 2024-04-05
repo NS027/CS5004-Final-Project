@@ -227,6 +227,45 @@ public class Building implements BuildingInterface {
       }
     }
   }
+
+  /**
+   * This method is used to distribute requests to the elevators.
+   */
+  private void distributeRequests() {
+    if (!this.upRequests.isEmpty() || !this.downRequests.isEmpty()) {
+      ElevatorInterface[] var1 = this.elevators;
+      int var2 = var1.length;
+
+      for (int var3 = 0; var3 < var2; ++var3) {
+        ElevatorInterface elevator = var1[var3];
+        if (elevator.isTakingRequests()) {
+          List<Request> downRequestsForElevator;
+          if (elevator.getCurrentFloor() == 0) {
+            downRequestsForElevator = this.getRequests(this.upRequests);
+            elevator.processRequests(downRequestsForElevator);
+          } else if (elevator.getCurrentFloor() == this.numberOfFloors - 1) {
+            downRequestsForElevator = this.getRequests(this.downRequests);
+            elevator.processRequests(downRequestsForElevator);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * This method is used to get the requests for the elevator.
+   *
+   * @param requests the list of requests to get the requests from
+   * @return the list of requests for the elevator
+   */
+  private List<Request> getRequests(List<Request> requests) {
+    List<Request> requestsForElevator = new ArrayList<>();
+    while (!requests.isEmpty() && requestsForElevator.size() < this.elevatorCapacity) {
+      requestsForElevator.add(requests.removeFirst());
+    }
+
+    return requestsForElevator;
+  }
 }
 
 
