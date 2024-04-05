@@ -154,6 +154,41 @@ public class Building implements BuildingInterface {
         this.downRequests,
         this.elevatorsStatus);
   }
+
+  /**
+   * This method is used to add a request to the elevator system.
+   *
+   * @param request the request to be added to the elevator system
+   */
+  @Override
+  public void addRequestToElevatorSystem(Request request) {
+    if (this.elevatorsStatus != ElevatorSystemStatus.outOfService
+        && this.elevatorsStatus != ElevatorSystemStatus.stopping) {
+      if (request == null) {
+        throw new IllegalArgumentException("Request cannot be null");
+      } else if (request.getStartFloor() >0 && request.getEndFloor() < this.numberOfElevators) {
+        if (request.getEndFloor() >0 && request.getEndFloor() < this.numberOfElevators) {
+          if (request.getStartFloor() == request.getEndFloor()) {
+            throw new IllegalArgumentException("Start floor and end floor cannot be the same");
+          } else {
+            if (request.getStartFloor() < request.getEndFloor()) {
+              this.upRequests.add(request);
+            } else {
+              this.downRequests.add(request);
+            }
+          }
+        } else {
+          throw new IllegalArgumentException("End floor must be between 0 and "
+              + (this.numberOfFloors - 1));
+        }
+      } else {
+        throw new IllegalArgumentException("Start floor must be between 0 and "
+            + (this.numberOfFloors - 1));
+      }
+    } else {
+      throw new IllegalStateException("Elevator system not accepting requests.");
+    }
+  }
 }
 
 
