@@ -133,6 +133,27 @@ public class Building implements BuildingInterface {
     return this.elevatorCapacity;
   }
 
+  /**
+   * This method is used to get the status of the elevator system.
+   *
+   * @return the status of the elevator system
+   */
+  @Override
+  public BuildingReport getStatusElevatorSystem() {
+    ElevatorReport[] elevatorReports = new ElevatorReport[this.numberOfElevators];
+
+    for (int i = 0; i < this.numberOfElevators; ++i) {
+      elevatorReports[i] = this.elevators[i].getElevatorStatus();
+    }
+
+    return new BuildingReport(this.numberOfFloors,
+        this.numberOfElevators,
+        this.elevatorCapacity,
+        elevatorReports,
+        this.upRequests,
+        this.downRequests,
+        this.elevatorsStatus);
+  }
 }
 
 
