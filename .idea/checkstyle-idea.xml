@@ -9,6 +9,7 @@
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="5a6c5ff1-4193-4355-828d-36ecd742af54" type="LOCAL_FILE" scope="All" description="NEU">$PROJECT_DIR$/../../Study/Term2/5004/Code/NEU Style/northeastern_checks-1.xml</ConfigurationLocation>
       </list>
     </option>
   </component>

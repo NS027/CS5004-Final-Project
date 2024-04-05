@@ -45,7 +45,15 @@ public interface BuildingInterface {
    */
   int getNumberOfElevators();
 
+  /**
+   * This method is used to get the capacity of the elevators in the building.
+   *
+   * @return the capacity of the elevators in the building.
+   */
+  int getElevatorCapacity();
 
-
-
+  /**
+   * This method is used to step the elevator system.
+   */
+  void stepElevatorSystem();
 }

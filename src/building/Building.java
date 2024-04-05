@@ -8,8 +8,7 @@ import elevator.ElevatorReport;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import scanerzus.Request;
 
 
@@ -17,6 +16,13 @@ import scanerzus.Request;
  * This class represents a building.
  */
 public class Building implements BuildingInterface {
+  private final int numberOfFloors;
+  private final int numberOfElevators;
+  private final int elevatorCapacity;
+  private ElevatorSystemStatus elevatorsStatus;
+  private final List<Request> upRequests = new ArrayList<>();
+  private final List<Request> downRequests = new ArrayList<>();
+  private final ElevatorInterface[] elevators;
 
   /**
    * The constructor for the building.
