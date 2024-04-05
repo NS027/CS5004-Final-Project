@@ -30,14 +30,37 @@ public class Building implements BuildingInterface {
    * @param numberOfFloors the number of floors in the building.
    * @param numberOfElevators the number of elevators in the building.
    * @param elevatorCapacity the capacity of the elevators in the building.
+   * throws IllegalArgumentException if numberOfFloors is less than 2,
+   *                                 numberOfElevators is less than 1,
+   *                                 or elevatorCapacity is less than 1
    */
-  public Building(int numberOfFloors, int numberOfElevators, int elevatorCapacity) {
-    System.out.println("Building constructor called");
-    System.out.println("numberOfFloors: " + numberOfFloors);
-    System.out.println("numberOfElevators: " + numberOfElevators);
-    System.out.println("elevatorCapacity: " + elevatorCapacity);
+  public Building(int numberOfFloors, int numberOfElevators, int elevatorCapacity) throws IllegalArgumentException{
+    if (numberOfFloors < 2) {
+      throw new IllegalArgumentException("numberOfFloors must be greater than or equal to 2");
+    } else if (numberOfElevators < 1) {
+      throw new IllegalArgumentException("numberOfElevators must be greater than or equal to 1");
+    } else if (elevatorCapacity < 1) {
+      throw new IllegalArgumentException("elevatorCapacity must be greater than or equal to 1");
+    } else {
+      this.numberOfFloors = numberOfFloors;
+      this.numberOfElevators = numberOfElevators;
+      this.elevatorCapacity = elevatorCapacity;
+      this.elevators = new Elevator[numberOfElevators];
 
-    System.out.println("\n\nYet to be built.");
+      for (int i = 0; i < numberOfElevators; ++i) {
+        this.elevators[i] = new Elevator(numberOfFloors, this.elevatorCapacity);
+      }
+
+      this.elevatorsStatus = ElevatorSystemStatus.outOfService;
+
+      System.out.println("Building constructor called");
+      System.out.println("numberOfFloors: " + numberOfFloors);
+      System.out.println("numberOfElevators: " + numberOfElevators);
+      System.out.println("elevatorCapacity: " + elevatorCapacity);
+
+      System.out.println("\n\nYet to be built.");
+    }
+
 
 
   }
