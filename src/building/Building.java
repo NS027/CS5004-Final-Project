@@ -54,15 +54,12 @@ public class Building implements BuildingInterface {
       this.elevatorsStatus = ElevatorSystemStatus.outOfService;
 
     }
-
-    System.out.println("Building constructor called");
-    System.out.println("numberOfFloors: " + numberOfFloors);
-    System.out.println("numberOfElevators: " + numberOfElevators);
-    System.out.println("elevatorCapacity: " + elevatorCapacity);
   }
 
   /**
    * This method is used to start the elevator system.
+   *
+   * @throws IllegalStateException if the elevator system is stopping
    */
   @Override
   public void startElevatorSystem() {
@@ -158,6 +155,10 @@ public class Building implements BuildingInterface {
    * This method is used to add a request to the elevator system.
    *
    * @param request the request to be added to the elevator system
+   * @throws IllegalArgumentException if the request is null,
+   *                                 the start floor is less than 0
+   *                                 or greater than or equal to the number of floors,
+   *                                 or the elevator system is not accepting requests.
    */
   @Override
   public void addRequestToElevatorSystem(Request request) {

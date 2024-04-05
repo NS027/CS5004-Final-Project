@@ -2,9 +2,7 @@ package building;
 
 import building.enums.ElevatorSystemStatus;
 import elevator.ElevatorReport;
-
 import java.util.List;
-
 import scanerzus.Request;
 
 
@@ -114,21 +112,4 @@ public class BuildingReport {
   public ElevatorSystemStatus getSystemStatus() {
     return this.systemStatus;
   }
-
-  /**
-   * This is toString method for the BuildingReport class.
-   */
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("BuildingReport: \n");
-    sb.append("System Status: " + this.systemStatus + "\n");
-    for (ElevatorReport elevatorReport : this.elevatorReports) {
-      sb.append(elevatorReport.toString()).append("\n");
-    }
-    sb.append("Up Requests: " + this.upRequests + "\n");
-    sb.append("Down Requests: " + this.downRequests + "\n");
-    return sb.toString();
-  }
-
 }
