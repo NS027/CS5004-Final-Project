@@ -6,11 +6,14 @@ import building.enums.ElevatorSystemStatus;
 import org.junit.Test;
 import scanerzus.Request;
 
+/**
+ * Test class for the Building class.
+ */
 public class BuildingTest {
   private Building building;
-  private static final int numberOfFloors = 15;
-  private static final int numberOfElevators = 2;
-  private static final int elevatorCapacity = 5;
+  private final static int numberOfFloors = 15;
+  private final static int numberOfElevators = 2;
+  private final static int elevatorCapacity = 5;
 
   /**
    * Test the constructor for exceptions.

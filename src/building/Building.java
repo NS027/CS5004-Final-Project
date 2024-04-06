@@ -4,11 +4,8 @@ import building.enums.ElevatorSystemStatus;
 import elevator.Elevator;
 import elevator.ElevatorInterface;
 import elevator.ElevatorReport;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 import scanerzus.Request;
 
 
@@ -31,10 +28,11 @@ public class Building implements BuildingInterface {
    * @param numberOfElevators the number of elevators in the building.
    * @param elevatorCapacity the capacity of the elevators in the building.
    * throws IllegalArgumentException if numberOfFloors is less than 2,
-   *                                 numberOfElevators is less than 1,
-   *                                 or elevatorCapacity is less than 1
+   * throws IllegalArgumentException if numberOfElevators is less than 1,
+   * throws IllegalArgumentException if elevatorCapacity is less than 1.
    */
-  public Building(int numberOfFloors, int numberOfElevators, int elevatorCapacity) throws IllegalArgumentException{
+  public Building(int numberOfFloors, int numberOfElevators, int elevatorCapacity)
+      throws IllegalArgumentException{
     if (numberOfFloors < 2) {
       throw new IllegalArgumentException("numberOfFloors must be greater than or equal to 2");
     } else if (numberOfElevators < 1) {

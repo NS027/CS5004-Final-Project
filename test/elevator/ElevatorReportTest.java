@@ -1,14 +1,21 @@
 package elevator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import building.enums.Direction;
+import building.enums.Direction;
 import org.junit.Before;
 import org.junit.Test;
-import building.enums.Direction;
 
+/**
+ * Test class for ElevatorReport
+ */
 public class ElevatorReportTest {
 
   ElevatorReport report;
 
+  /**
+   * Set up the test.
+   */
   @Before
   public void setUp() {
     report = new ElevatorReport(

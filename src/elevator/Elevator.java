@@ -2,9 +2,7 @@ package elevator;
 
 
 import building.enums.Direction;
-
 import java.util.List;
-
 import scanerzus.Request;
 
 
