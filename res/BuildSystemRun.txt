@@ -1,0 +1,365 @@
+/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=53652:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /Users/chris/Desktop/CS5004Final/CS5004 Final Project/out/production/CS5004 Final Project main.MainConsole
+Elevator System is Initialized.
+Enter 'start' to begin, 'stop' to stop, 'step' to make movement, 'request' to add request, 'status' to get status, 'quit' to exit.
+>>>
+start
+Elevator System is initiated.
+====================================
+Building Status:
+------------------------------------
+Number of Floors: 10
+Number of Elevators: 1
+Elevator Capacity: 3
+====================================
+>>>
+request 1 3
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 0
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: true
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 1
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 1
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 1
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 1
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 1
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 2
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 3
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 3
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 3
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 3
+Elevator moving direction: ^
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 3
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 5
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 7
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 8
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 9
+Elevator moving direction: ^
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 9
+Elevator moving direction: -
+Door Status: Closed
+Accepting request: true
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 9
+Elevator moving direction: -
+Door Status: Closed
+Accepting request: true
+------------------------------------
+>>>
+request 6 4
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 9
+Elevator moving direction: -
+Door Status: Closed
+Accepting request: true
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 8
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 7
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 6
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 5
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Open
+Accepting request: false
+------------------------------------
+>>>
+step
+Building Status:Running
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+>>>
+stop
+Building Status:Stopping
+------------------------------------
+Elevator ID: 0
+Current Floor: 4
+Elevator moving direction: v
+Door Status: Closed
+Accepting request: false
+------------------------------------
+
+Process finished with exit code 0

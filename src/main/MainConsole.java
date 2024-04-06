@@ -35,12 +35,12 @@ public class MainConsole {
     boolean flag = true;
 
     System.out.println("Elevator System is Initialized.");
-    System.out.println("Enter 'start' to begin, " +
-        "'stop' to stop, " +
-        "'step' to make movement, " +
-        "'request' to add request, " +
-        "'status' to get status, " +
-        "'quit' to exit.");
+    System.out.println("Enter 'start' to begin, "
+        + "'stop' to stop, "
+        + "'step' to make movement, "
+        + "'request' to add request, "
+        + "'status' to get status, "
+        + "'quit' to exit.");
 
     while (flag) {
       System.out.println(">>> ");
@@ -79,12 +79,13 @@ public class MainConsole {
           stringOutput2(building);
           break;
         default:
-          System.out.println("Invalid Command. " +
-              "Available commands: start, stop, request, step, quit.");
+          System.out.println("Invalid Command. "
+              + "Available commands: start, stop, request, step, quit.");
           break;
       }
     }
   }
+
   private static void stringOutput1(Building building) {
     BuildingReport report = building.getStatusElevatorSystem();
     System.out.println("====================================");
@@ -95,6 +96,7 @@ public class MainConsole {
     System.out.println("Elevator Capacity: " + report.getElevatorCapacity());
     System.out.println("====================================");
   }
+
   private static void stringOutput2(Building building) {
     BuildingReport report = building.getStatusElevatorSystem();
     System.out.println("Building Status:" + report.getSystemStatus());
