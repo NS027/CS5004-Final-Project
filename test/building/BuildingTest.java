@@ -11,9 +11,9 @@ import scanerzus.Request;
  */
 public class BuildingTest {
   private Building building;
-  private final static int numberOfFloors = 15;
-  private final static int numberOfElevators = 2;
-  private final static int elevatorCapacity = 5;
+  private final int numberOfFloors = 15;
+  private final int numberOfElevators = 2;
+  private final int elevatorCapacity = 5;
 
   /**
    * Test the constructor for exceptions.
