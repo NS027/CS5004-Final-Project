@@ -1,8 +1,8 @@
 package elevator;
 
 import static org.junit.Assert.assertEquals;
-import building.enums.Direction;
 
+import building.enums.Direction;
 import org.junit.Before;
 import org.junit.Test;
 

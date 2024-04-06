@@ -27,7 +27,6 @@ public class Building implements BuildingInterface {
    * @param numberOfFloors the number of floors in the building.
    * @param numberOfElevators the number of elevators in the building.
    * @param elevatorCapacity the capacity of the elevators in the building.
-   * throws IllegalArgumentException if floor is less than 2, elevator  or capacity is less than 1
    */
   public Building(int numberOfFloors, int numberOfElevators, int elevatorCapacity)
       throws IllegalArgumentException {
