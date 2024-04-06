@@ -152,6 +152,14 @@ public class Building implements BuildingInterface {
   }
 
   /**
+   * This method is used to get the status of the elevators in the building.
+   */
+  @Override
+  public String getElevatorStatus() {
+    return this.elevatorsStatus.toString();
+  }
+
+  /**
    * This method is used to add a request to the elevator system.
    *
    * @param request the request to be added to the elevator system

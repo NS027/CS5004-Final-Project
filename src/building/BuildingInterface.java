@@ -56,4 +56,11 @@ public interface BuildingInterface {
    * This method is used to step the elevator system.
    */
   void stepElevatorSystem();
+
+  /**
+   * This method is used to get the status of the elevator system.
+   *
+   * @return the status of the elevator system.
+   */
+  String getElevatorStatus();
 }

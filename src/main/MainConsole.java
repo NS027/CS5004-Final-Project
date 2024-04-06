@@ -25,30 +25,18 @@ public class MainConsole {
 
     // the number of floors, the number of elevators, and the number of people.
 
-    final int numFloors = 11;
-    final int numElevators = 8;
+    final int numFloors = 10;
+    final int numElevators = 1;
     final int numPeople = 3;
 
     Building building = new Building(numFloors, numElevators, numPeople);
-//    String[] introText = {
-//        "Welcome to the Elevator System!",
-//        "This system will simulate the operation of an elevator system.",
-//        "The system will be initialized with the following parameters:",
-//        "Number of floors: " + numFloors,
-//        "Number of elevators: " + numElevators,
-//        "Number of people: " + numPeople,
-//        "The system will then be run and the results will be displayed.",
-//        "",
-//        "Press enter to continue."
-//    };
-//    System.out.println(String.join("\n", introText));
 
     Scanner scanner = new Scanner(System.in);
     boolean flag = true;
 
     System.out.println("Elevator System is Initialized.");
     System.out.println("Enter 'start' to begin, " +
-        "'stop' to end, " +
+        "'stop' to stop, " +
         "'step' to make movement, " +
         "'request' to add request, " +
         "'status' to get status, " +
@@ -62,29 +50,33 @@ public class MainConsole {
       switch (para[0].toLowerCase()) {
         case "start":
           building.startElevatorSystem();
-          printHelper1(building);
+          System.out.println("Elevator System is initiated.");
+          stringOutput1(building);
           break;
         case "stop":
           building.stopElevatorSystem();
-          printHelper2(building);
+          stringOutput2(building);
           flag = false;
           break;
         case "step":
           building.stepElevatorSystem();
-          printHelper2(building);
+          stringOutput2(building);
           break;
         case "request":
           if (para.length == 3) {
             int startFloor = Integer.parseInt(para[1]);
             int endFloor = Integer.parseInt(para[2]);
             building.addRequestToElevatorSystem(new Request(startFloor, endFloor));
-            printHelper2(building);
+            stringOutput2(building);
           } else {
             System.out.println("Invalid request format. Use 'request [startFloor] [endFloor]'.");
           }
           break;
         case "quit":
           System.exit(0);
+          break;
+        case "status":
+          stringOutput2(building);
           break;
         default:
           System.out.println("Invalid Command. " +
@@ -93,22 +85,27 @@ public class MainConsole {
       }
     }
   }
-  private static void printHelper1(Building building) {
+  private static void stringOutput1(Building building) {
     BuildingReport report = building.getStatusElevatorSystem();
+    System.out.println("====================================");
     System.out.println("Building Status:");
+    System.out.println("------------------------------------");
     System.out.println("Number of Floors: " + report.getNumFloors());
     System.out.println("Number of Elevators: " + report.getNumElevators());
     System.out.println("Elevator Capacity: " + report.getElevatorCapacity());
+    System.out.println("====================================");
   }
-  private static void printHelper2(Building building) {
+  private static void stringOutput2(Building building) {
     BuildingReport report = building.getStatusElevatorSystem();
-    System.out.println("\nBuilding Status:" + report.getSystemStatus());
+    System.out.println("Building Status:" + report.getSystemStatus());
     for (ElevatorReport elevatorReport : report.getElevatorReports()) {
-      System.out.println("\nElevator ID: " + elevatorReport.getElevatorId());
+      System.out.println("------------------------------------");
+      System.out.println("Elevator ID: " + elevatorReport.getElevatorId());
       System.out.println("Current Floor: " + elevatorReport.getCurrentFloor());
-      System.out.println("Direction: " + elevatorReport.getDirection());
+      System.out.println("Elevator moving direction: " + elevatorReport.getDirection());
       System.out.println("Door Status: " + (elevatorReport.isDoorClosed() ? "Closed" : "Open"));
-      System.out.println("Is Taking Requests: " + elevatorReport.isTakingRequests());
+      System.out.println("Accepting request: " + elevatorReport.isTakingRequests());
+      System.out.println("------------------------------------");
     }
   }
 }
