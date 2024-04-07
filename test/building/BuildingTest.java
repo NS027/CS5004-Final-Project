@@ -324,7 +324,7 @@ public class BuildingTest {
   }
 
   /**
-   * Test for take out of service when door is open for at least one elevator
+   * Test for take out of service when door is open for at least one elevator.
    */
   @Test
   public void testOutOfServiceWhenDoorOpen() {
