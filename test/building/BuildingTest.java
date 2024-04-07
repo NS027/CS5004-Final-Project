@@ -170,6 +170,7 @@ public class BuildingTest {
 
   /**
    * addRequestToElevatorSystem method test with exception.
+   * The request can not be added after the elevator system is stopped.
    */
   @Test(expected = IllegalStateException.class)
   public void testAddRequestAfterStopped() {
@@ -178,6 +179,20 @@ public class BuildingTest {
     building.addRequestToElevatorSystem(new Request(3, 1));
   }
 
+  /**
+   * addRequestToElevatorSystem method test with exception.
+   * The request can not be added before the elevator system is started.
+   */
+  @Test(expected = IllegalStateException.class)
+  public void testAddRequestBeforeStarted() {
+    building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
+    building.addRequestToElevatorSystem(new Request(3, 1));
+  }
+
+  /**
+   * addRequestToElevatorSystem method test with exception.
+   * The null request can not be added.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testAddNullRequest() {
     building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
@@ -185,13 +200,21 @@ public class BuildingTest {
     building.addRequestToElevatorSystem(null);
   }
 
+  /**
+   * addRequestToElevatorSystem method test with exception.
+   * The request can not be added with invalid start floor.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testAddRequestInvalidStartFloor() {
     building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
     building.startElevatorSystem();
-    building.addRequestToElevatorSystem(new Request(-1, 1));
+    building.addRequestToElevatorSystem(new Request(-5, 1));
   }
 
+  /**
+   * addRequestToElevatorSystem method test with exception.
+   * The request can not be added with invalid end floor.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testAddRequestInvalidEndFloor() {
     building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
@@ -199,6 +222,10 @@ public class BuildingTest {
     building.addRequestToElevatorSystem(new Request(1, 100));
   }
 
+  /**
+   * addRequestToElevatorSystem method test with exception.
+   * The request can not be added with invalid same floor.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testAddRequestWithSameFloor() {
     building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
@@ -282,5 +309,33 @@ public class BuildingTest {
     building.addRequestToElevatorSystem(new Request(0, 2));
     building.addRequestToElevatorSystem(new Request(0, 3));
     building.stepElevatorSystem();
+  }
+
+  /**
+   * Test for out of service.
+   */
+  @Test
+  public void testOutOfService() {
+    building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
+    building.startElevatorSystem();
+    building.stopElevatorSystem();
+    building.stepElevatorSystem();
+    assertEquals(ElevatorSystemStatus.outOfService.toString(), building.getElevatorStatus());
+  }
+
+  /**
+   * Test for take out of service when door is open for at least one elevator
+   */
+  @Test
+  public void testOutOfServiceWhenDoorOpen() {
+    building = new Building(numberOfFloors, numberOfElevators, elevatorCapacity);
+    building.startElevatorSystem();
+    building.addRequestToElevatorSystem(new Request(1, 2));
+    building.stepElevatorSystem();
+    building.stepElevatorSystem();
+    building.stepElevatorSystem();
+    building.stopElevatorSystem();
+    building.stepElevatorSystem();
+    assertEquals(ElevatorSystemStatus.outOfService.toString(), building.getElevatorStatus());
   }
 }
