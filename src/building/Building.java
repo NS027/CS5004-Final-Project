@@ -46,8 +46,8 @@ public class Building implements BuildingInterface {
         this.elevators[i] = new Elevator(numberOfFloors, this.elevatorCapacity);
       }
 
+      // The elevator system is out of service until it is started.
       this.elevatorsStatus = ElevatorSystemStatus.outOfService;
-
     }
   }
 
@@ -58,19 +58,23 @@ public class Building implements BuildingInterface {
    */
   @Override
   public void startElevatorSystem() {
-    if (this.elevatorsStatus != ElevatorSystemStatus.running) {
-      if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
-        throw new IllegalStateException("Elevator cannot be started until it is stopped");
-      } else {
-        ElevatorInterface [] variable1 = this.elevators;
-        int variable2 = variable1.length;
+    // Check if the elevator system is already running.
+    if (this.elevatorsStatus == ElevatorSystemStatus.running) {
+      System.out.println("System is already running");
+      return;
+    }
 
-        for (int variable3 = 0; variable3 < variable2; ++variable3) {
-          ElevatorInterface elevator = variable1[variable3];
-          elevator.start();
-        }
-        this.elevatorsStatus = ElevatorSystemStatus.running;
+    // When system is in the process of stopping, it cannot be started.
+    if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
+      throw new IllegalStateException("Elevator cannot be started until it is stopped");
+    }
+
+    // If the elevator system is initiated or at out of service status, start the elevators.
+    if (this.elevatorsStatus == ElevatorSystemStatus.outOfService) {
+      for (ElevatorInterface elevator : this.elevators) {
+        elevator.start();  // Start each elevator individually
       }
+      this.elevatorsStatus = ElevatorSystemStatus.running;  // Change system status to running
     }
   }
 

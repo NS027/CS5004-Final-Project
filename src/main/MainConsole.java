@@ -26,7 +26,7 @@ public class MainConsole {
     // the number of floors, the number of elevators, and the number of people.
 
     final int numFloors = 10;
-    final int numElevators = 1;
+    final int numElevators = 2;
     final int numPeople = 3;
 
     Building building = new Building(numFloors, numElevators, numPeople);
@@ -56,7 +56,7 @@ public class MainConsole {
         case "stop":
           building.stopElevatorSystem();
           stringOutput2(building);
-          flag = false;
+          //flag = false;
           break;
         case "step":
           building.stepElevatorSystem();
