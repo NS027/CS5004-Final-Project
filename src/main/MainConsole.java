@@ -3,6 +3,7 @@ package main;
 import building.Building;
 import building.BuildingReport;
 import elevator.ElevatorReport;
+import java.util.Random;
 import java.util.Scanner;
 import scanerzus.Request;
 
@@ -25,24 +26,25 @@ public class MainConsole {
 
     // the number of floors, the number of elevators, and the number of people.
 
-    final int numFloors = 3;
+    final int numFloors = 10;
     final int numElevators = 2;
     final int numPeople = 3;
 
     Building building = new Building(numFloors, numElevators, numPeople);
 
     Scanner scanner = new Scanner(System.in);
-    boolean flag = true;
 
     System.out.println("Elevator System is Initialized.");
     System.out.println("Enter 'start' to begin, "
         + "'stop' to stop, "
         + "'step' to make movement, "
+        + "step n to make n movements, "
         + "'request' to add request, "
+        + "request n to add n random requests,"
         + "'status' to get status, "
         + "'quit' to exit.");
 
-    while (flag) {
+    while (true) {
       System.out.println(">>> ");
       String command = scanner.nextLine();
       String[] para = command.split(" ");
@@ -56,20 +58,22 @@ public class MainConsole {
         case "stop":
           building.stopElevatorSystem();
           stringOutput2(building);
-          //flag = false;
           break;
         case "step":
-          building.stepElevatorSystem();
+          if (para.length == 2) {
+            int n = Integer.parseInt(para[1]);
+            for (int i = 0; i < n; i++) {
+              building.stepElevatorSystem();
+            }
+          } else {
+            building.stepElevatorSystem();
+          }
           stringOutput2(building);
           break;
         case "request":
-          if (para.length == 3) {
-            int startFloor = Integer.parseInt(para[1]);
-            int endFloor = Integer.parseInt(para[2]);
-            building.addRequestToElevatorSystem(new Request(startFloor, endFloor));
-            stringOutput2(building);
-          } else {
-            System.out.println("Invalid request format. Use 'request [startFloor] [endFloor]'.");
+          if (para.length > 1) {
+            int requests = Integer.parseInt(para[1]);
+            generateRandomRequests(building, requests, numFloors);
           }
           break;
         case "quit":
@@ -83,6 +87,18 @@ public class MainConsole {
               + "Available commands: start, stop, request, step, quit.");
           break;
       }
+    }
+  }
+
+  private static void generateRandomRequests(Building building, int n, int floors) {
+    Random rand = new Random();
+    for (int i = 0; i < n; i++) {
+      int start = rand.nextInt(floors);
+      int end;
+      do {
+        end = rand.nextInt(floors);
+      } while (start == end);
+      building.addRequestToElevatorSystem(new Request(start, end));
     }
   }
 
