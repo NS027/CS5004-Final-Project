@@ -83,18 +83,53 @@ public class Building implements BuildingInterface {
    */
   @Override
   public void stopElevatorSystem() {
-    if (this.elevatorsStatus != ElevatorSystemStatus.outOfService
-        && this.elevatorsStatus != ElevatorSystemStatus.stopping) {
-      ElevatorInterface [] variable1 = this.elevators;
-      int variable2 = variable1.length;
+    // If the elevator is not running, it cannot be stopped.
+    if (this.elevatorsStatus == ElevatorSystemStatus.running) {
+      this.elevatorsStatus = ElevatorSystemStatus.stopping;
+      System.out.println("Elevator system is stopping, no new requests will be accepted.");
 
-      for (int variable3 = 0; variable3 < variable2; ++variable3) {
-        ElevatorInterface elevator = variable1[variable3];
+      // Command each elevator to stopping status
+      for (ElevatorInterface elevator : this.elevators) {
         elevator.takeOutOfService();
-        this.elevatorsStatus = ElevatorSystemStatus.stopping;
-        this.upRequests.clear();
-        this.downRequests.clear();
       }
+      // Set the status of the elevator system to stopping
+      this.elevatorsStatus = ElevatorSystemStatus.stopping;
+
+      // Clear the requests
+      this.upRequests.clear();
+      this.downRequests.clear();
+
+      // Check the status of each elevator to complete the stopping process
+      completeShutDown();
+    } else if (this.elevatorsStatus == ElevatorSystemStatus.outOfService) {
+      System.out.println("Elevator system is already out of service.");
+    } else if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
+      System.out.println("Elevator system is already stopping.");
+    }
+  }
+
+  /**
+   * This method is used to check the status of each elevator to complete the stopping process.
+   * If all elevators are on the ground floor, the elevator system is out of service.
+   * If not, the elevator system is still stopping.
+   */
+  private void completeShutDown() {
+    boolean allElevatorsOnGroundFloor = true;  // Reset the flag each time method is called
+    for (ElevatorInterface elevator : this.elevators) {
+      if (elevator.getCurrentFloor() != 0) {
+        allElevatorsOnGroundFloor = false;  // Set to false if any elevator is not on the ground floor
+        break;
+      }
+    }
+
+    if (allElevatorsOnGroundFloor) {
+      for (ElevatorInterface elevator : this.elevators) {
+        elevator.step();
+      }
+      this.elevatorsStatus = ElevatorSystemStatus.outOfService;
+      System.out.println("System is now out of service.");
+    } else {
+      System.out.println("Waiting for all elevators to reach the ground floor.");
     }
   }
 
@@ -203,34 +238,17 @@ public class Building implements BuildingInterface {
   @Override
   public void stepElevatorSystem() {
     if (this.elevatorsStatus != ElevatorSystemStatus.outOfService) {
-      if (this.elevatorsStatus != ElevatorSystemStatus.stopping) {
+      if (this.elevatorsStatus == ElevatorSystemStatus.running) {
         this.distributeRequests();
       }
-    }
 
-    ElevatorInterface[] variable1 = this.elevators;
-    int variable2 = variable1.length;
-
-    for (int variable3 = 0; variable3 < variable2; ++variable3) {
-      ElevatorInterface elevator = variable1[variable3];
-      elevator.step();
-    }
-
-    if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
-      boolean allElevatorsOnGroundFloor = true;
-      ElevatorInterface[] variable4 = this.elevators;
-      int variable5 = variable4.length;
-
-      for (int variable6 = 0; variable6 < variable5; ++variable6) {
-        ElevatorInterface elevator = variable4[variable6];
-        if (elevator.getCurrentFloor() != 0) {
-          allElevatorsOnGroundFloor = false;
-          break;
-        }
+      for (ElevatorInterface elevator : this.elevators) {
+        elevator.step();
       }
 
-      if (allElevatorsOnGroundFloor) {
-        this.elevatorsStatus = ElevatorSystemStatus.outOfService;
+      // Check if all elevators are on te ground if system is stopping
+      if (this.elevatorsStatus == ElevatorSystemStatus.stopping) {
+        this.completeShutDown();
       }
     }
   }
