@@ -31,5 +31,22 @@ public class ElevatorControllerImpl {
    */
   public void stopSystem() {
     building.stopElevatorSystem();
+  }
+
+  /**
+   * This is method used to step the elevator controller
+   */
+  public void stepSystem() {
+    building.stepElevatorSystem();
+  }
+
+  /**
+   * This is method used to process n step to the elevator controller
+   */
+  public void stepSystemN(int n) {
+    for (int i = 0; i < n; i++) {
+      building.stepElevatorSystem();
+    }
+  }
 
 }
