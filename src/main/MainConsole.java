@@ -25,7 +25,7 @@ public class MainConsole {
 
     // the number of floors, the number of elevators, and the number of people.
 
-    final int numFloors = 10;
+    final int numFloors = 3;
     final int numElevators = 2;
     final int numPeople = 3;
 
