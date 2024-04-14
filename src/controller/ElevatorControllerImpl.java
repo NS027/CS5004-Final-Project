@@ -91,4 +91,11 @@ public class ElevatorControllerImpl {
     building.addRequestToElevatorSystem(new Request(startFloor, endFloor));
   }
 
+  /**
+   * This is method used to quit the elevator controller
+   */
+  public void quitSystem() {
+    System.exit(0);
+  }
+
 }
