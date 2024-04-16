@@ -4,115 +4,103 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-// ... Other imports
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ElevatorSystemView extends JFrame {
-  // Existing component declarations...
 
-  // Adding components for the Test Panel
+  private JPanel buildingReportPanel;
+  private Map<Integer, JPanel> elevatorShafts;
+  private Map<Integer, JPanel> elevatorCars;
+  private JButton stepButton, startButton, stopButton;
+  private JPanel addRequestPanel;
+  private JTextArea buildingReportTextArea;
+  private List<JTextArea> elevatorReportTextAreas = new ArrayList<>();
+  private JLabel selectedStartFloorLabel;
+  private JLabel selectedEndFloorLabel;
+  private JButton sendRequestButton;
+  private JPanel elevatorReportPanel;
   private JTextField nStepTextField;
   private JTextField nRequestTextField;
   private JButton nStepButton;
   private JButton nRequestButton;
 
   // Constructor
-  public ElevatorSystemView(int numFloors, int numElevators) {
-    // Existing initialization code...
+  public ElevatorSystemView(int numFloors, int numElevators, int elevatorCapacity) {
+    super("Elevator System Simulation");
 
-    // Monitor Panel
-    JPanel monitorPanel = createMonitorPanel();
+    // Initialize elevatorShafts and elevatorCars
+    elevatorShafts = new HashMap<>();
+    elevatorCars = new HashMap<>();
 
-    // Control Panel
-    JPanel controlPanel = createControlPanel();
+    // Panel creation
+    createMonitorPanel();
+    createControlPanel();
+    createElevatorPanel(numFloors, numElevators);
+    createDisplayPanel(numElevators);
+    createTestPanel();
 
-    // Display Panel
-    JPanel displayPanel = createDisplayPanel();
-
-    // Test Panel
-    JPanel testPanel = createTestPanel();
-
-    // Set the layout and add the panels to the frame
-    setLayout(new BorderLayout());
-    add(monitorPanel, BorderLayout.NORTH);
-    add(controlPanel, BorderLayout.WEST);
-    add(displayPanel, BorderLayout.CENTER);
-    add(testPanel, BorderLayout.SOUTH);
-
-    // Finalize setup
+    // Configure main frame
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setPreferredSize(new Dimension(800, 600)); // Adjust as needed
     pack(); // Adjusts the frame to fit the content
     setLocationRelativeTo(null); // Center the frame
     setVisible(true);
   }
 
-  // Monitor Panel
-  private JPanel createMonitorPanel() {
-    // Assuming monitorPanel is a JPanel with a JTextArea that updates to show the building report
-    // The JTextArea updates are assumed to be handled elsewhere in the code based on simulation updates
-    return monitorPanel;
+  private void createMonitorPanel() {
+    buildingReportPanel = new JPanel();
+    buildingReportPanel.setBorder(BorderFactory.createTitledBorder("Building Report"));
+    buildingReportTextArea = new JTextArea(5, 20);
+    buildingReportTextArea.setEditable(false);
+    JScrollPane scrollPane = new JScrollPane(buildingReportTextArea);
+    buildingReportPanel.add(scrollPane);
+    add(buildingReportPanel, BorderLayout.NORTH);
   }
 
-  // Control Panel
-  private JPanel createControlPanel() {
-    // Existing method to create the control panel with Start, Step, and Stop buttons
-    // The button actions are assumed to be handled elsewhere in the code to control the simulation
-    return controlPanel;
+  private void createControlPanel() {
+    JPanel controlPanel = new JPanel();
+    stepButton = new JButton("Step");
+    startButton = new JButton("Start");
+    stopButton = new JButton("Stop");
+    controlPanel.add(stepButton);
+    controlPanel.add(startButton);
+    controlPanel.add(stopButton);
+    add(controlPanel, BorderLayout.SOUTH);
   }
 
-  // Display Panel
-  private JPanel createDisplayPanel() {
-    // This panel can be made up of JTextAreas within JScrollPane for each elevator
-    // Each JTextArea can be updated based on the individual elevator's state changes
-    return displayPanel;
+  private void createElevatorPanel(int numFloors, int numElevators) {
+    // Method to create the panel that demonstrates the elevator shafts and cars
   }
 
-  // Test Panel
-  private JPanel createTestPanel() {
-    JPanel testPanel = new JPanel(new GridLayout(2, 3, 5, 5));
-
-    testPanel.add(new JLabel("N Steps:"));
-    nStepTextField = new JTextField();
-    testPanel.add(nStepTextField);
-
-    nStepButton = new JButton("Perform N Steps");
-    testPanel.add(nStepButton);
-
-    testPanel.add(new JLabel("N Requests:"));
-    nRequestTextField = new JTextField();
-    testPanel.add(nRequestTextField);
-
-    nRequestButton = new JButton("Generate N Requests");
-    testPanel.add(nRequestButton);
-
-    // Adding action listeners for the buttons
-    nStepButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        // Logic to perform N Steps
-      }
-    });
-
-    nRequestButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        // Logic to generate N Requests
-      }
-    });
-
-    return testPanel;
+  private void createDisplayPanel(int numElevators) {
+    elevatorReportPanel = new JPanel();
+    elevatorReportPanel.setLayout(new BoxLayout(elevatorReportPanel, BoxLayout.Y_AXIS));
+    elevatorReportPanel.setBorder(BorderFactory.createTitledBorder("Elevator Reports"));
+    for (int i = 0; i < numElevators; i++) {
+      JTextArea elevatorReportTextArea = new JTextArea(5, 20);
+      elevatorReportTextArea.setEditable(false);
+      JScrollPane scrollPane = new JScrollPane(elevatorReportTextArea);
+      elevatorReportPanel.add(scrollPane);
+      elevatorReportTextAreas.add(elevatorReportTextArea);
+    }
+    add(elevatorReportPanel, BorderLayout.CENTER);
   }
 
-  // Existing methods for updating the UI based on simulation...
+  private void createTestPanel() {
+    JPanel testPanel = new JPanel();
+    // Rest of your existing code for testPanel
+  }
 
   // Main method to launch the UI
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        new ElevatorSystemView(10, 3); // Example floor and elevator numbers
+        new ElevatorSystemView(10, 3, 5); // Example parameters
       }
     });
   }
 }
-
