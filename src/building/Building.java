@@ -303,4 +303,11 @@ public class Building implements BuildingInterface {
     }
     return fittedRequests;
   }
+
+  /**
+   * This is a method get elevator report.
+   */
+  public ElevatorReport getElevatorReport(int elevatorId) {
+    return this.elevators[elevatorId].getElevatorStatus();
+  }
 }

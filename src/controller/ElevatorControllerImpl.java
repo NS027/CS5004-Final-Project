@@ -3,6 +3,7 @@ package controller;
 
 import building.Building;
 import building.BuildingReport;
+import elevator.ElevatorReport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -129,5 +130,12 @@ public class ElevatorControllerImpl {
    */
   public BuildingReport getBuildingReport() {
     return building.getStatusElevatorSystem();
+  }
+
+  /**
+   * This is method used to get elevator report
+   */
+  public ElevatorReport getElevatorReport(int elevatorId) {
+    return building.getElevatorReport(elevatorId);
   }
 }
