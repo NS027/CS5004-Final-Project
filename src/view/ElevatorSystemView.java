@@ -16,7 +16,7 @@ public class ElevatorSystemView extends JFrame {
   private JPanel monitorPanel;
   private JTextArea monitorPanelTextArea;
   private JPanel controlPanel;
-  private JPanel elavatorPanel;
+  private JPanel demonstratePanel;
   private JPanel displayPanel;
   private List<JTextArea> displayPanelTextAreas = new ArrayList<>();
   private JPanel testPanel;
@@ -53,13 +53,18 @@ public class ElevatorSystemView extends JFrame {
     // Panel creation methods
     createMonitorPanel();
     createControlPanel();
-    createElevatorPanel(controller.getBuildingStatus().getNumberOfFloors(), controller.getBuildingStatus().getNumberOfElevators());
+    createDemonstratePanel(controller.getBuildingStatus().getNumberOfFloors(),
+        controller.getBuildingStatus().getNumberOfElevators());
     createDisplayPanel(controller.getBuildingStatus().getNumberOfElevators());
     createTestPanel();
 
     // Some update methods
     updateMonitorPanel();
     updateElevatorDisplays();
+    for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+      ElevatorReport report = controller.getElevatorReport(i);
+      updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+    }
 
     // Configure main frame
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,6 +109,10 @@ public class ElevatorSystemView extends JFrame {
       controller.startSystem();
       updateMonitorPanel();
       updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
     });
 
     stepButton = new JButton("Step");
@@ -111,6 +120,10 @@ public class ElevatorSystemView extends JFrame {
       controller.stepSystem();
       updateMonitorPanel();
       updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
     });
 
     stopButton = new JButton("Stop");
@@ -118,6 +131,10 @@ public class ElevatorSystemView extends JFrame {
       controller.stopSystem();
       updateMonitorPanel();
       updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
     });
 
     exitButton = new JButton("Exit");
@@ -143,6 +160,10 @@ public class ElevatorSystemView extends JFrame {
       controller.addRequest(fromFloor, toFloor);
       updateMonitorPanel();
       updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
       JOptionPane.showMessageDialog(this, "Request sent from floor " + fromFloor + " to floor " + toFloor);
     });
 
@@ -166,12 +187,56 @@ public class ElevatorSystemView extends JFrame {
     add(controlPanel, BorderLayout.EAST);
   }
 
-  private void createElevatorPanel(int numFloors, int numElevators) {
-    elavatorPanel = new JPanel();
-    elavatorPanel.setBorder(BorderFactory.createTitledBorder("Monitor Panel"));
-    elavatorPanel.setLayout(new BoxLayout(elavatorPanel, BoxLayout.X_AXIS));
-    add(elavatorPanel, BorderLayout.CENTER);
-    // Method to create the panel that demonstrates the elevator shafts and cars
+  private void createDemonstratePanel(int numFloors, int numElevators) {
+    JPanel elevatorsPanel = new JPanel(new GridLayout(1, numElevators, 10, 0));
+    elevatorShafts = new HashMap<>();
+    elevatorCars = new HashMap<>();
+
+    for (int i = 0; i < numElevators; i++) {
+      JPanel elevatorShaft = new JPanel(new GridLayout(numFloors, 1));
+      elevatorShaft.setBorder(BorderFactory.createTitledBorder("Elevator " + (i + 1)));
+
+      for (int j = numFloors - 1; j >= 0; j--) {
+        JPanel floorPanel = new JPanel();
+        floorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        floorPanel.setLayout(new BorderLayout());
+
+        JLabel floorLabel = new JLabel("Floor " + (j + 1), SwingConstants.CENTER);
+        floorPanel.add(floorLabel, BorderLayout.NORTH);
+
+        if (j == 0) {  // Assuming elevator starts at the bottom floor
+          JPanel elevatorCar = new JPanel();
+          elevatorCar.setBackground(Color.LIGHT_GRAY);
+          elevatorCar.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+          elevatorCars.put(i, elevatorCar);
+          floorPanel.add(elevatorCar, BorderLayout.CENTER);
+        }
+
+        elevatorShaft.add(floorPanel);
+      }
+      elevatorsPanel.add(elevatorShaft);
+      elevatorShafts.put(i, elevatorShaft);
+    }
+    add(elevatorsPanel, BorderLayout.CENTER);
+  }
+
+  public void updateElevatorPosition(int elevatorId, int currentFloor, boolean doorOpen) {
+    JPanel elevatorCar = elevatorCars.get(elevatorId);
+    if (elevatorCar == null) {
+      System.err.println("Elevator car not found for ID: " + elevatorId);
+      return;
+    }
+
+    JPanel elevatorShaft = elevatorShafts.get(elevatorId);
+    for (Component comp : elevatorShaft.getComponents()) {
+      ((JPanel) comp).remove(elevatorCar);
+    }
+
+    JPanel floorPanel = (JPanel) elevatorShaft.getComponent(controller.getBuildingStatus().getNumberOfFloors() - currentFloor - 1);
+    elevatorCar.setBackground(doorOpen ? Color.GREEN : Color.LIGHT_GRAY);
+    floorPanel.add(elevatorCar, BorderLayout.CENTER);
+    elevatorShaft.revalidate();
+    elevatorShaft.repaint();
   }
 
   private void createDisplayPanel(int numElevators) {
@@ -242,6 +307,10 @@ public class ElevatorSystemView extends JFrame {
           controller.stepSystemN(steps);
           updateMonitorPanel();
           updateElevatorDisplays();
+          for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+            ElevatorReport report = controller.getElevatorReport(i);
+            updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+          }
           JOptionPane.showMessageDialog(ElevatorSystemView.this, "Performed " + steps + " steps.");
         } catch (NumberFormatException ex) {
           JOptionPane.showMessageDialog(ElevatorSystemView.this, "Invalid number for N Steps", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -257,6 +326,10 @@ public class ElevatorSystemView extends JFrame {
           controller.addRandomRequest(requests);
           updateMonitorPanel();
           updateElevatorDisplays();
+          for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+            ElevatorReport report = controller.getElevatorReport(i);
+            updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+          }
           JOptionPane.showMessageDialog(ElevatorSystemView.this, "Generated " + requests + " random requests.");
         } catch (NumberFormatException ex) {
           JOptionPane.showMessageDialog(ElevatorSystemView.this, "Invalid number for N Requests", "Input Error", JOptionPane.ERROR_MESSAGE);
