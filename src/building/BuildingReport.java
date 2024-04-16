@@ -112,4 +112,22 @@ public class BuildingReport {
   public ElevatorSystemStatus getSystemStatus() {
     return this.systemStatus;
   }
+
+  /**
+   * This is toString method for the BuildingReport class.
+   *
+   * @return The string representation of the BuildingReport.
+   */
+  @Override
+  public String toString() {
+    StringBuilder report = new StringBuilder();
+    report.append("Building Report:\n");
+    report.append("System Status: ").append(this.systemStatus).append("\n");
+    for (ElevatorReport elevatorReport : this.elevatorReports) {
+      report.append(elevatorReport.toString()).append("\n");
+    }
+    report.append("Up Requests: ").append(this.upRequests).append("\n");
+    report.append("Down Requests: ").append(this.downRequests).append("\n");
+    return report.toString();
+  }
 }
