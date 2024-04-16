@@ -8,6 +8,7 @@ import elevator.ElevatorReport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import scanerzus.Request;
 
 
@@ -256,9 +257,10 @@ public class Building implements BuildingInterface {
   }
 
   /**
-   * This method is used to distribute requests to the elevators.
-   * If an elevator is on the ground floor, it will take requests from the upRequests list.
-   * If an elevator is on the top floor, it will take requests from the downRequests list.
+   * This Helper method is used to distribute requests to the elevators.
+   * It iterates over each elevator and assigns requests based on the elevator's current floor.
+   * If the elevator is at the ground floor, it processes all up requests.
+   * If the elevator is at the top floor, it processes all down requests.
    */
   private void distributeRequests() {
     // Exit if there are no requests
@@ -266,61 +268,39 @@ public class Building implements BuildingInterface {
       return;
     }
 
-    // Iterate through the elevators
+    // Iterate over each elevator
     for (ElevatorInterface elevator : elevators) {
       if (!elevator.isTakingRequests()) {
-        continue;  // Skip the elevator if it is not taking requests
+        continue;  // Skip elevators that are not currently accepting requests
       }
 
-      // Get the requests for the elevator
-      List<Request> requestsToProcess = new ArrayList<>();
+      List<Request> requestsForThisElevator = new ArrayList<>();
 
-      // Assign up requests to the elevator if it is on the ground floor
-      // or elevator is going up and there are no down requests
-      if (elevator.getCurrentFloor() == 0 || elevator.getDirection() == Direction.UP) {
-        requestsToProcess.addAll(getRequests(upRequests, elevator.getCurrentFloor(), true));
-      }
-
-      // Assign down requests to the elevator if it is on the top floor
-      // or elevator is going down and there are no up requests
-      if (elevator.getCurrentFloor() == this.numberOfFloors - 1
-          || elevator.getDirection() == Direction.DOWN) {
-        requestsToProcess.addAll(getRequests(downRequests, elevator.getCurrentFloor(), false));
-      }
-
-      // Process all the requests in the list
-      if (!requestsToProcess.isEmpty()) {
-        elevator.processRequests(requestsToProcess);
+      if (elevator.getCurrentFloor() == 0) {
+        // Elevator is at the ground floor, process all upRequests
+        requestsForThisElevator.addAll(getRequestsToFitCapacity(upRequests, elevator.getMaxOccupancy()));
+        elevator.processRequests(requestsForThisElevator); // Process the collected up requests
+      } else if (elevator.getCurrentFloor() == this.numberOfFloors - 1) {
+        // Elevator is at the top floor, process all downRequests
+        requestsForThisElevator.addAll(getRequestsToFitCapacity(downRequests, elevator.getMaxOccupancy()));
+        elevator.processRequests(requestsForThisElevator); // Process the collected down requests
       }
     }
   }
 
   /**
-   * This method is used to get the requests for the elevator.
-   *
-   * @param requests the list of requests to get the requests from
-   * @param currentFloor the current floor of the elevator
-   * @param isUp true if the elevator is moving up, false if the elevator is moving down
-   * @return the list of requests for the elevator
+   * Helper method to collect requests up to the capacity limit of the elevator.
+   * @param requests List of requests (either up or down).
+   * @param capacity Maximum number of requests the elevator can handle.
+   * @return List of requests that fit within the elevator's capacity.
    */
-  private List<Request> getRequests(List<Request> requests, int currentFloor, boolean isUp) {
-    List<Request> matchedRequests = new ArrayList<>();
-    Iterator<Request> iterator = requests.iterator();
-
-    // Loop through each request and determine if it matches the elevator's current situation.
-    while (iterator.hasNext()) {
-      Request request = iterator.next();
-      // For elevators moving up, add requests where the start floor is greater than or equal to the elevator's current floor.
-      // For elevators moving down, add requests where the start floor is less than or equal to the elevator's current floor.
-      if ((isUp && request.getStartFloor() >= currentFloor)
-          || (!isUp && request.getStartFloor() <= currentFloor)) {
-        matchedRequests.add(request);
-        // Remove the request from the main list to prevent it from being processed again.
-        iterator.remove();
-      }
+  private List<Request> getRequestsToFitCapacity(List<Request> requests, int capacity) {
+    List<Request> fittedRequests = new ArrayList<>();
+    int count = 0;
+    while (count < capacity && !requests.isEmpty()) {
+      fittedRequests.add(requests.remove(0));  // Take and remove the request from the list
+      count++;
     }
-    return matchedRequests;
+    return fittedRequests;
   }
 }
-
-
