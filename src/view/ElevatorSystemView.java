@@ -15,22 +15,30 @@ public class ElevatorSystemView extends JFrame {
   private JPanel monitorPanel;
   private JTextArea monitorPanelTextArea;
   private JPanel controlPanel;
-  private JPanel elavaatorPanel;
+  private JPanel elavatorPanel;
   private JPanel displayPanel;
   private List<JTextArea> displayPanelTextAreas = new ArrayList<>();
   private JPanel testPanel;
   private JTextField nStepTextField;
   private JTextField nRequestTextField;
 
+  private JLabel floorInfoLabel;
+  private JLabel systemStatusLabel;
+
   private Map<Integer, JPanel> elevatorShafts;
   private Map<Integer, JPanel> elevatorCars;
-  private JButton stepButton, startButton, stopButton;
+  private JButton stepButton;
+  private JButton startButton;
+  private JButton stopButton;
+  private JButton nStepButton;
+  private JButton exitButton;
+  private JButton nRequestButton;
+  private JButton sendRequestButton;
+
   private JPanel addRequestPanel;
   private JLabel selectedStartFloorLabel;
   private JLabel selectedEndFloorLabel;
-  private JButton sendRequestButton;
-  private JButton nStepButton;
-  private JButton nRequestButton;
+
 
   // Constructor
   public ElevatorSystemView(ElevatorControllerImpl controller) {
@@ -41,7 +49,7 @@ public class ElevatorSystemView extends JFrame {
     elevatorShafts = new HashMap<>();
     elevatorCars = new HashMap<>();
 
-    // Panel creation
+    // Panel creation methods
     createMonitorPanel();
     createControlPanel();
     createElevatorPanel(controller.getBuildingStatus().getNumberOfFloors(), controller.getBuildingStatus().getNumberOfElevators());
@@ -69,6 +77,10 @@ public class ElevatorSystemView extends JFrame {
   private void createControlPanel() {
     controlPanel = new JPanel();
     controlPanel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
+    controlPanel.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    // Initialize buttons
     startButton = new JButton("Start");
     startButton.addActionListener(e -> {
       controller.startSystem();
@@ -83,12 +95,15 @@ public class ElevatorSystemView extends JFrame {
     stopButton.addActionListener(e -> {
       controller.stopSystem();
     });
-    controlPanel.add(stepButton);
-    controlPanel.add(startButton);
-    controlPanel.add(stopButton);
-    add(controlPanel, BorderLayout.SOUTH);
 
-    // Adding floor selection drop-downs
+    exitButton = new JButton("Exit");
+    exitButton.addActionListener(e -> {
+      controller.quitSystem();
+    });
+
+
+
+    // Initialize dropdowns
     JComboBox<Integer> fromFloorDropdown = new JComboBox<>();
     JComboBox<Integer> toFloorDropdown = new JComboBox<>();
     for (int i = 1; i <= controller.getBuildingStatus().getNumberOfFloors(); i++) {
@@ -97,7 +112,7 @@ public class ElevatorSystemView extends JFrame {
     }
 
     // Initialize send request button
-    JButton sendRequestButton = new JButton("Send Request");
+    sendRequestButton = new JButton("Send Request");
     sendRequestButton.addActionListener(e -> {
       int fromFloor = (int) fromFloorDropdown.getSelectedItem();
       int toFloor = (int) toFloorDropdown.getSelectedItem();
@@ -105,44 +120,31 @@ public class ElevatorSystemView extends JFrame {
       JOptionPane.showMessageDialog(this, "Request sent from floor " + fromFloor + " to floor " + toFloor);
     });
 
-    // Layout management
-    controlPanel.setLayout(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
+    // GridBagLayout settings
     gbc.gridx = 0;
-    gbc.gridy = 0;
-    gbc.insets = new Insets(5, 5, 5, 5);  // top, left, bottom, right padding
-    gbc.anchor = GridBagConstraints.LINE_START;
+    gbc.gridy = GridBagConstraints.RELATIVE;  // This auto-increments the gridy value
+    gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill its display area horizontally
+    gbc.insets = new Insets(5, 5, 5, 5); // Padding
 
     // Add components to the panel
     controlPanel.add(startButton, gbc);
-    gbc.gridy++;
     controlPanel.add(stepButton, gbc);
-    gbc.gridy++;
     controlPanel.add(stopButton, gbc);
-
-    // Adding floor selection components
-    gbc.gridx = 1;  // Increment x to add in next column
-    gbc.gridy = 0;
+    controlPanel.add(exitButton, gbc);
     controlPanel.add(new JLabel("From Floor:"), gbc);
-    gbc.gridy++;
     controlPanel.add(fromFloorDropdown, gbc);
-    gbc.gridy++;
     controlPanel.add(new JLabel("To Floor:"), gbc);
-    gbc.gridy++;
     controlPanel.add(toFloorDropdown, gbc);
-
-    // Send request button
-    gbc.gridx = 2;  // Move to the next column for button
-    gbc.gridy = 0;
-    gbc.gridheight = GridBagConstraints.REMAINDER;  // Span across all remaining rows
     controlPanel.add(sendRequestButton, gbc);
 
-    add(controlPanel, BorderLayout.SOUTH);
+    add(controlPanel, BorderLayout.EAST);
   }
 
   private void createElevatorPanel(int numFloors, int numElevators) {
-    elavaatorPanel = new JPanel();
-    elavaatorPanel.setBorder(BorderFactory.createTitledBorder("Monitor Panel"));
+    elavatorPanel = new JPanel();
+    elavatorPanel.setBorder(BorderFactory.createTitledBorder("Monitor Panel"));
+    elavatorPanel.setLayout(new BoxLayout(elavatorPanel, BoxLayout.X_AXIS));
+    add(elavatorPanel, BorderLayout.CENTER);
     // Method to create the panel that demonstrates the elevator shafts and cars
   }
 
@@ -157,7 +159,7 @@ public class ElevatorSystemView extends JFrame {
       displayPanel.add(scrollPane);
       displayPanelTextAreas.add(elevatorReportTextArea);
     }
-    add(displayPanel, BorderLayout.CENTER);
+    add(displayPanel, BorderLayout.WEST);
   }
 
   private void createTestPanel() {
@@ -183,7 +185,7 @@ public class ElevatorSystemView extends JFrame {
     nRequestPanel.add(nRequestButton);
     testPanel.add(nRequestPanel);
 
-    add(testPanel, BorderLayout.EAST);
+    add(testPanel, BorderLayout.SOUTH);
 
     // Adding action listeners for the buttons
     nStepButton.addActionListener(new ActionListener() {
