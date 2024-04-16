@@ -15,7 +15,7 @@ public class Main {
     ElevatorControllerImpl controller = new ElevatorControllerImpl(numFloors, numElevators, capacity);
 
     // Start the view and pass the controller to it
-    SwingUtilities.invokeLater(() -> new ElevatorSystemView(10,5,2));
+    SwingUtilities.invokeLater(() -> new ElevatorSystemView(controller));
   }
 }
 
