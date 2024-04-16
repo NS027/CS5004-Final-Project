@@ -8,7 +8,7 @@ public class Main {
   public static void main(String[] args) {
     // Parameters for the elevator system
     final int numFloors = 10;
-    final int numElevators = 2;
+    final int numElevators = 4;
     final int capacity = 3;
 
     // Create the controller with the building parameters
