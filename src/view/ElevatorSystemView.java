@@ -56,6 +56,9 @@ public class ElevatorSystemView extends JFrame {
     createDisplayPanel(controller.getBuildingStatus().getNumberOfElevators());
     createTestPanel();
 
+    // Some update methods
+    updateMonitorPanel();
+
     // Configure main frame
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(1024, 800)); // Adjust as needed
@@ -66,12 +69,25 @@ public class ElevatorSystemView extends JFrame {
 
   private void createMonitorPanel() {
     monitorPanel = new JPanel();
+    monitorPanel.setLayout(new BoxLayout(monitorPanel, BoxLayout.Y_AXIS));
     monitorPanel.setBorder(BorderFactory.createTitledBorder("Monitor Panel"));
-    monitorPanelTextArea = new JTextArea(5, 20);
+
+    monitorPanelTextArea = new JTextArea(10, 20);
     monitorPanelTextArea.setEditable(false);
     JScrollPane scrollPane = new JScrollPane(monitorPanelTextArea);
+
+    // Set the initial text to the building report
+    monitorPanelTextArea.setText(controller.getBuildingReport().toString());
+
     monitorPanel.add(scrollPane);
     add(monitorPanel, BorderLayout.NORTH);
+  }
+
+
+  public void updateMonitorPanel() {
+    SwingUtilities.invokeLater(() -> {
+      monitorPanelTextArea.setText(controller.getBuildingReport().toString());
+    });
   }
 
   private void createControlPanel() {
@@ -84,16 +100,19 @@ public class ElevatorSystemView extends JFrame {
     startButton = new JButton("Start");
     startButton.addActionListener(e -> {
       controller.startSystem();
+      updateMonitorPanel();
     });
 
     stepButton = new JButton("Step");
     stepButton.addActionListener(e -> {
       controller.stepSystem();
+      updateMonitorPanel();
     });
 
     stopButton = new JButton("Stop");
     stopButton.addActionListener(e -> {
       controller.stopSystem();
+      updateMonitorPanel();
     });
 
     exitButton = new JButton("Exit");
@@ -117,6 +136,7 @@ public class ElevatorSystemView extends JFrame {
       int fromFloor = (int) fromFloorDropdown.getSelectedItem();
       int toFloor = (int) toFloorDropdown.getSelectedItem();
       controller.addRequest(fromFloor, toFloor);
+      updateMonitorPanel();
       JOptionPane.showMessageDialog(this, "Request sent from floor " + fromFloor + " to floor " + toFloor);
     });
 
