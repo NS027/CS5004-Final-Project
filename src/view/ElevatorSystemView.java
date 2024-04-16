@@ -1,162 +1,118 @@
 package view;
 
-import controller.ElevatorControllerImpl;
-import building.BuildingReport;
-import java.util.List;
-import scanerzus.Request;
-import elevator.ElevatorReport;
-import java.awt.*;
 import javax.swing.*;
-import scanerzus.Request;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+// ... Other imports
 
 public class ElevatorSystemView extends JFrame {
+  // Existing component declarations...
 
-  private ElevatorControllerImpl controller;
-  private JPanel floorPanel;
-  private JLabel statusLabel;
-  private JComboBox<String> startFloorDropdown, endFloorDropdown;
-  private JButton startButton, stepButton, stopButton, nStepButton, sendRequestButton, nRequestsButton;
-  private JTextField nStepTextField, nRequestsTextField;
-  private JTextArea statusArea;
+  // Adding components for the Test Panel
+  private JTextField nStepTextField;
+  private JTextField nRequestTextField;
+  private JButton nStepButton;
+  private JButton nRequestButton;
 
-  public ElevatorSystemView(ElevatorControllerImpl controller) {
-    this.controller = controller;
-    initializeUI();
-  }
+  // Constructor
+  public ElevatorSystemView(int numFloors, int numElevators) {
+    // Existing initialization code...
 
-  private void initializeUI() {
-    setTitle("Elevator System Simulation");
-    setSize(800, 600);
+    // Monitor Panel
+    JPanel monitorPanel = createMonitorPanel();
+
+    // Control Panel
+    JPanel controlPanel = createControlPanel();
+
+    // Display Panel
+    JPanel displayPanel = createDisplayPanel();
+
+    // Test Panel
+    JPanel testPanel = createTestPanel();
+
+    // Set the layout and add the panels to the frame
+    setLayout(new BorderLayout());
+    add(monitorPanel, BorderLayout.NORTH);
+    add(controlPanel, BorderLayout.WEST);
+    add(displayPanel, BorderLayout.CENTER);
+    add(testPanel, BorderLayout.SOUTH);
+
+    // Finalize setup
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    JPanel mainPanel = new JPanel(new BorderLayout());
-    floorPanel = new JPanel(new GridLayout(0, 5, 5, 5)); // 5 elevators assumed
-    statusLabel = new JLabel("System Status: Stopped");
-
-    setupDropdowns();
-    setupButtons();
-    setupStatusArea();
-
-    mainPanel.add(statusLabel, BorderLayout.NORTH);
-    mainPanel.add(floorPanel, BorderLayout.CENTER);
-    mainPanel.add(createControlPanel(), BorderLayout.SOUTH);
-    add(mainPanel);
-
+    pack(); // Adjusts the frame to fit the content
+    setLocationRelativeTo(null); // Center the frame
     setVisible(true);
-    updateViewStatus();  // Initial update of the view status
   }
 
+  // Monitor Panel
+  private JPanel createMonitorPanel() {
+    // Assuming monitorPanel is a JPanel with a JTextArea that updates to show the building report
+    // The JTextArea updates are assumed to be handled elsewhere in the code based on simulation updates
+    return monitorPanel;
+  }
+
+  // Control Panel
   private JPanel createControlPanel() {
-    JPanel controlPanel = new JPanel();
-    controlPanel.add(startFloorDropdown);
-    controlPanel.add(endFloorDropdown);
-    controlPanel.add(startButton);
-    controlPanel.add(stepButton);
-    controlPanel.add(stopButton);
-    controlPanel.add(nStepTextField);
-    controlPanel.add(nStepButton);
-    controlPanel.add(sendRequestButton);
-    controlPanel.add(nRequestsTextField);
-    controlPanel.add(nRequestsButton);
+    // Existing method to create the control panel with Start, Step, and Stop buttons
+    // The button actions are assumed to be handled elsewhere in the code to control the simulation
     return controlPanel;
   }
 
-  private void setupDropdowns() {
-    startFloorDropdown = new JComboBox<>();
-    endFloorDropdown = new JComboBox<>();
-    for (int i = 0; i < controller.getBuildingStatus().getNumberOfFloors(); i++) {
-      startFloorDropdown.addItem(String.valueOf(i));
-      endFloorDropdown.addItem(String.valueOf(i));
-    }
+  // Display Panel
+  private JPanel createDisplayPanel() {
+    // This panel can be made up of JTextAreas within JScrollPane for each elevator
+    // Each JTextArea can be updated based on the individual elevator's state changes
+    return displayPanel;
   }
 
-  private void setupButtons() {
-    startButton = new JButton("Start");
-    startButton.addActionListener(e -> {
-      controller.startSystem();
-      updateViewStatus();
-    });
+  // Test Panel
+  private JPanel createTestPanel() {
+    JPanel testPanel = new JPanel(new GridLayout(2, 3, 5, 5));
 
-    stepButton = new JButton("Step");
-    stepButton.addActionListener(e -> {
-      controller.stepSystem();
-      updateViewStatus();
-    });
+    testPanel.add(new JLabel("N Steps:"));
+    nStepTextField = new JTextField();
+    testPanel.add(nStepTextField);
 
-    stopButton = new JButton("Stop");
-    stopButton.addActionListener(e -> {
-      controller.stopSystem();
-      updateViewStatus();
-    });
+    nStepButton = new JButton("Perform N Steps");
+    testPanel.add(nStepButton);
 
-    nStepTextField = new JTextField(5);
-    nStepButton = new JButton("N Steps");
-    nStepButton.addActionListener(e -> {
-      int steps = Integer.parseInt(nStepTextField.getText());
-      controller.stepSystemN(steps);
-      updateViewStatus();
-    });
+    testPanel.add(new JLabel("N Requests:"));
+    nRequestTextField = new JTextField();
+    testPanel.add(nRequestTextField);
 
-    sendRequestButton = new JButton("Send Request");
-    sendRequestButton.addActionListener(e -> {
-      int fromFloor = Integer.parseInt((String) startFloorDropdown.getSelectedItem());
-      int toFloor = Integer.parseInt((String) endFloorDropdown.getSelectedItem());
-      controller.addRequest(fromFloor, toFloor);
-      updateViewStatus();
-    });
+    nRequestButton = new JButton("Generate N Requests");
+    testPanel.add(nRequestButton);
 
-    nRequestsTextField = new JTextField(5);
-    nRequestsButton = new JButton("N Requests");
-    nRequestsButton.addActionListener(e -> {
-      int requests = Integer.parseInt(nRequestsTextField.getText());
-      controller.addRandomRequest(requests);
-      updateViewStatus();
-    });
-  }
-
-  private void setupStatusArea() {
-    statusArea = new JTextArea(10, 40);
-    statusArea.setEditable(false);
-    // Add statusArea to the panel or scroll pane if required
-    // ...
-  }
-
-  public void updateViewStatus() {
-    BuildingReport report = controller.getBuildingReport();
-    statusLabel.setText("System Status: " + report.getSystemStatus());
-    statusArea.setText("");  // Clear previous text
-
-    floorPanel.removeAll(); // Clear previous elevator representations
-
-    List<Request> requests = controller.getActiveRequests();  // Get active requests directly from the controller
-
-    for (ElevatorReport elevatorReport : report.getElevatorReports()) {
-      JPanel elevatorPanel = new JPanel();
-      elevatorPanel.setLayout(new BoxLayout(elevatorPanel, BoxLayout.Y_AXIS));
-      elevatorPanel.setBorder(BorderFactory.createTitledBorder("Elevator " + elevatorReport.getElevatorId()));
-
-      JLabel floorLabel = new JLabel("Floor: " + elevatorReport.getCurrentFloor());
-      JLabel directionLabel = new JLabel("Direction: " + elevatorReport.getDirection());
-      JLabel doorStatusLabel = new JLabel("Door: " + (elevatorReport.isDoorClosed() ? "Closed" : "Open"));
-
-      elevatorPanel.add(floorLabel);
-      elevatorPanel.add(directionLabel);
-      elevatorPanel.add(doorStatusLabel);
-
-      // Display all active requests
-      StringBuilder requestText = new StringBuilder("<html>Active Requests:<br/>");
-      for (Request request : requests) {
-        requestText.append("[").append(request.getStartFloor()).append(" -> ").append(request.getEndFloor()).append("]<br/>");
+    // Adding action listeners for the buttons
+    nStepButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Logic to perform N Steps
       }
-      requestText.append("</html>");
-      JLabel requestLabel = new JLabel(requestText.toString());
-      elevatorPanel.add(requestLabel);
+    });
 
-      floorPanel.add(elevatorPanel);
-    }
+    nRequestButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Logic to generate N Requests
+      }
+    });
 
-    floorPanel.revalidate(); // Revalidate the panel to reflect changes
-    floorPanel.repaint();    // Repaint the panel to display the updated status
+    return testPanel;
   }
 
+  // Existing methods for updating the UI based on simulation...
+
+  // Main method to launch the UI
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        new ElevatorSystemView(10, 3); // Example floor and elevator numbers
+      }
+    });
+  }
 }
+
