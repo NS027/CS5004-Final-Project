@@ -11,15 +11,17 @@ import java.util.List;
 import java.util.Random;
 import scanerzus.Request;
 
-
+/**
+ * The ElevatorControllerImpl class is the controller for the elevator system.
+ * It is responsible for managing the building and the elevators.
+ */
 public class ElevatorControllerImpl {
   private Building building;
   private Random random;
   private List<Request> activeRequests = new ArrayList<>();
 
-
   /**
-   * Constructor for the ElevatorControllerImpl class
+   * Constructor for the ElevatorControllerImpl class.
    *
    * @param numFloors the number of floors in the building
    * @param numElevators the number of elevators in the building
@@ -31,14 +33,14 @@ public class ElevatorControllerImpl {
   }
 
   /**
-   * This is method used to start the elevator controller
+   * This is method used to start the elevator controller.
    */
   public void startSystem() {
     building.startElevatorSystem();
   }
 
   /**
-   * This is method used to stop the elevator controller
+   * This is method used to stop the elevator controller.
    */
   public void stopSystem() {
     building.stopElevatorSystem();
@@ -55,8 +57,8 @@ public class ElevatorControllerImpl {
     boolean allElevatorsGrounded = false;
     while (!allElevatorsGrounded) {
       allElevatorsGrounded = true;
-      for (int elevatorID = 0; elevatorID < building.getNumberOfElevators(); elevatorID++) {
-        ElevatorReport report = building.getElevatorReport(elevatorID);
+      for (int elevatorId = 0; elevatorId < building.getNumberOfElevators(); elevatorId++) {
+        ElevatorReport report = building.getElevatorReport(elevatorId);
         if (report.getCurrentFloor() != 0) {
           allElevatorsGrounded = false;
         }
@@ -75,14 +77,16 @@ public class ElevatorControllerImpl {
   }
 
   /**
-   * This is method used to step the elevator controller
+   * This is method used to step the elevator controller.
    */
   public void stepSystem() {
     building.stepElevatorSystem();
   }
 
   /**
-   * This is method used to process n step to the elevator controller
+   * This is method used to process n step to the elevator controller.
+   *
+   * @param n the number of steps to process
    */
   public void stepSystemN(int n) {
     for (int i = 0; i < n; i++) {
@@ -91,7 +95,10 @@ public class ElevatorControllerImpl {
   }
 
   /**
-   * This is method used to add request to the elevator controller
+   * This is method used to add request to the elevator controller.
+   *
+   * @param fromFloor the floor where the request is made
+   * @param toFloor the floor where the request is going
    */
   public void addRequest(int fromFloor, int toFloor) {
     Request newRequest = new Request(fromFloor, toFloor);
@@ -104,7 +111,9 @@ public class ElevatorControllerImpl {
   }
 
   /**
-   * This is method used to add n request to the elevator controller
+   * This is method used to add n request to the elevator controller.
+   *
+   * @param n the number of requests to add
    */
   public void addRandomRequest(int n) {
     for (int i = 0; i < n; i++) {
@@ -115,7 +124,7 @@ public class ElevatorControllerImpl {
 
 
   /**
-   * This is method used to generate random request
+   * This is method used to generate random request.
    */
   private void generateRequest(boolean isUp) {
     int startFloor = random.nextInt(building.getNumberOfFloors());
@@ -144,28 +153,35 @@ public class ElevatorControllerImpl {
 
 
   /**
-   * This is method used to quit the elevator controller
+   * This is method used to quit the elevator controller.
    */
   public void quitSystem() {
     System.exit(0);
   }
 
   /**
-   * This is method used to get the building
+   * This is method used to get the building.
+   *
+   * @return the building
    */
   public Building getBuildingStatus() {
     return building;
   }
 
   /**
-   * This is method used to get building report
+   * This is method used to get building report.
+   *
+   * @return the building report
    */
   public BuildingReport getBuildingReport() {
     return building.getStatusElevatorSystem();
   }
 
   /**
-   * This is method used to get elevator report
+   * This is method used to get elevator report.
+   *
+   * @param elevatorId the elevator id
+   * @return the elevator report
    */
   public ElevatorReport getElevatorReport(int elevatorId) {
     return building.getElevatorReport(elevatorId);

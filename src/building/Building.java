@@ -120,7 +120,7 @@ public class Building implements BuildingInterface {
     boolean allElevatorsOnGroundFloor = true;  // Reset the flag each time method is called
     for (ElevatorInterface elevator : this.elevators) {
       if (elevator.getCurrentFloor() != 0) {
-        allElevatorsOnGroundFloor = false;  // Set to false if any elevator is not on the ground floor
+        allElevatorsOnGroundFloor = false;  // Set to false if elevator is not on the ground floor
         break;
       }
     }
@@ -278,11 +278,13 @@ public class Building implements BuildingInterface {
 
       if (elevator.getCurrentFloor() == 0) {
         // Elevator is at the ground floor, process all upRequests
-        requestsForThisElevator.addAll(getRequestsToFitCapacity(upRequests, elevator.getMaxOccupancy()));
+        requestsForThisElevator.addAll(getRequestsToFitCapacity(upRequests,
+            elevator.getMaxOccupancy()));
         elevator.processRequests(requestsForThisElevator); // Process the collected up requests
       } else if (elevator.getCurrentFloor() == this.numberOfFloors - 1) {
         // Elevator is at the top floor, process all downRequests
-        requestsForThisElevator.addAll(getRequestsToFitCapacity(downRequests, elevator.getMaxOccupancy()));
+        requestsForThisElevator.addAll(getRequestsToFitCapacity(downRequests,
+            elevator.getMaxOccupancy()));
         elevator.processRequests(requestsForThisElevator); // Process the collected down requests
       }
     }
@@ -306,6 +308,9 @@ public class Building implements BuildingInterface {
 
   /**
    * This is a method get elevator report.
+   *
+   * @param elevatorId the elevator id
+   * @return the elevator report
    */
   public ElevatorReport getElevatorReport(int elevatorId) {
     return this.elevators[elevatorId].getElevatorStatus();
