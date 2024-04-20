@@ -21,7 +21,7 @@ public class Main {
   public static void main(String[] args) {
     // Default values in case arguments are not provided or are invalid
     int numFloors = 10;
-    int numElevators = 5;
+    int numElevators = 3;
     int capacity = 3;
 
     // Check if the right number of arguments are passed

@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CS5004 Final Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CS5004_Final_Project_jar</output-path>
+    <root id="archive" name="CS5004 Final Project.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/Java/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="CS5004 Final Project" />
+    </root>
+  </artifact>
+</component>
