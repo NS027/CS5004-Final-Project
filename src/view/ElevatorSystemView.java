@@ -2,15 +2,39 @@ package view;
 
 import controller.ElevatorControllerImpl;
 import elevator.ElevatorReport;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
+
+/**
+ * The view class for the elevator system.
+ */
 public class ElevatorSystemView extends JFrame {
   private ElevatorControllerImpl controller;
   private JPanel statusPanel;
@@ -20,8 +44,8 @@ public class ElevatorSystemView extends JFrame {
   private JPanel displayPanel;
   private List<JTextArea> displayPanelTextAreas = new ArrayList<>();
   private JPanel testPanel;
-  private JTextField nStepTextField;
-  private JTextField nRequestTextField;
+  private JTextField nsteptextField;
+  private JTextField nrequesttextField;
 
   private JLabel floorInfoLabel;
   private JLabel systemStatusLabel;
@@ -32,13 +56,14 @@ public class ElevatorSystemView extends JFrame {
   private JButton startButton;
   private JButton stopButton;
   private JButton shutDownButton;
-  private JButton nStepButton;
+  private JButton restartButton;
+  private JButton nstepButton;
   private JButton exitButton;
-  private JButton nRequestButton;
+  private JButton nrequestButton;
   private JButton sendRequestButton;
 
   /**
-   * Constructor for the ElevatorSystemView class
+   * Constructor for the ElevatorSystemView class.
    *
    * @param controller The controller for the elevator system
    */
@@ -77,11 +102,11 @@ public class ElevatorSystemView extends JFrame {
 
   private void createTestPanel() {
     JPanel northPanel = new JPanel();
-    northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS)); // Vertical stack for north panel
+    northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS)); // Vertical stack north panel
 
     // Status Panel setup
     statusPanel = new JPanel();
-    statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS)); // Vertical layout for status info
+    statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS)); // Vertical for status info
 
     floorInfoLabel = new JLabel("Num of Floors: "
         + controller.getBuildingStatus().getNumberOfFloors()
@@ -92,7 +117,8 @@ public class ElevatorSystemView extends JFrame {
         SwingConstants.CENTER);
     floorInfoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    systemStatusLabel = new JLabel("System Status: " + controller.getBuildingReport().getSystemStatus(),
+    systemStatusLabel = new JLabel("System Status: "
+        + controller.getBuildingReport().getSystemStatus(),
         SwingConstants.CENTER);
     systemStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -104,29 +130,29 @@ public class ElevatorSystemView extends JFrame {
     testPanel.setBorder(BorderFactory.createTitledBorder("Test Panel"));
     testPanel.setLayout(new FlowLayout(FlowLayout.LEFT));  // Horizontal layout for controls
 
-    createNStepPanel();
-    createNRequestPanel();
+    createStepPanel();
+    createRequestPanel();
 
     northPanel.add(statusPanel);
     northPanel.add(testPanel);
 
-    add(northPanel, BorderLayout.NORTH); // Add the composite panel to the north region of the layout
+    add(northPanel, BorderLayout.NORTH); // Add the composite panel to the north
   }
 
-  private void createNStepPanel() {
-    JPanel nStepPanel = new JPanel();
-    nStepPanel.add(new JLabel("N Steps:"));
-    nStepTextField = new JTextField(10);
-    nStepPanel.add(nStepTextField);
-    nStepButton = new JButton("Perform N Steps");
-    nStepPanel.add(nStepButton);
-    testPanel.add(nStepPanel);
+  private void createStepPanel() {
+    JPanel nstepPanel = new JPanel();
+    nstepPanel.add(new JLabel("N Steps:"));
+    nsteptextField = new JTextField(10);
+    nstepPanel.add(nsteptextField);
+    nstepButton = new JButton("Perform N Steps");
+    nstepPanel.add(nstepButton);
+    testPanel.add(nstepPanel);
     // Adding action listeners for the buttons
-    nStepButton.addActionListener(new ActionListener() {
+    nstepButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
-          int steps = Integer.parseInt(nStepTextField.getText());
+          int steps = Integer.parseInt(nsteptextField.getText());
           controller.stepSystemN(steps);
           updateSystemStatus();
           updateMonitorPanel();
@@ -135,27 +161,29 @@ public class ElevatorSystemView extends JFrame {
             ElevatorReport report = controller.getElevatorReport(i);
             updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
           }
-          JOptionPane.showMessageDialog(ElevatorSystemView.this, "Performed " + steps + " steps.");
+          JOptionPane.showMessageDialog(ElevatorSystemView.this,
+              "Performed " + steps + " steps.");
         } catch (NumberFormatException ex) {
-          JOptionPane.showMessageDialog(ElevatorSystemView.this, "Invalid number for N Steps", "Input Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(ElevatorSystemView.this,
+              "Invalid number for N Steps", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
   }
 
-  private void createNRequestPanel() {
-    JPanel nRequestPanel = new JPanel();
-    nRequestPanel.add(new JLabel("N Requests:"));
-    nRequestTextField = new JTextField(10);
-    nRequestPanel.add(nRequestTextField);
-    nRequestButton = new JButton("Generate N Requests");
-    nRequestPanel.add(nRequestButton);
-    testPanel.add(nRequestPanel);
-    nRequestButton.addActionListener(new ActionListener() {
+  private void createRequestPanel() {
+    JPanel nrequestPanel = new JPanel();
+    nrequestPanel.add(new JLabel("N Requests:"));
+    nrequesttextField = new JTextField(10);
+    nrequestPanel.add(nrequesttextField);
+    nrequestButton = new JButton("Generate N Requests");
+    nrequestPanel.add(nrequestButton);
+    testPanel.add(nrequestPanel);
+    nrequestButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
-          int requests = Integer.parseInt(nRequestTextField.getText());
+          int requests = Integer.parseInt(nrequesttextField.getText());
           controller.addRandomRequest(requests);
           updateSystemStatus();
           updateMonitorPanel();
@@ -164,9 +192,11 @@ public class ElevatorSystemView extends JFrame {
             ElevatorReport report = controller.getElevatorReport(i);
             updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
           }
-          JOptionPane.showMessageDialog(ElevatorSystemView.this, "Generated " + requests + " random requests.");
+          JOptionPane.showMessageDialog(ElevatorSystemView.this,
+              "Generated " + requests + " random requests.");
         } catch (NumberFormatException ex) {
-          JOptionPane.showMessageDialog(ElevatorSystemView.this, "Invalid number for N Requests", "Input Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(ElevatorSystemView.this,
+              "Invalid number for N Requests", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -192,7 +222,9 @@ public class ElevatorSystemView extends JFrame {
     add(monitorPanel, BorderLayout.SOUTH);
   }
 
-
+  /**
+   * Update the monitor panel with the latest building report.
+   */
   public void updateMonitorPanel() {
     SwingUtilities.invokeLater(() -> {
       monitorPanelTextArea.setText(controller.getBuildingReport().toString());
@@ -203,7 +235,6 @@ public class ElevatorSystemView extends JFrame {
     controlPanel = new JPanel();
     controlPanel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
     controlPanel.setLayout(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
 
     // Initialize buttons
     startButton = new JButton("Start");
@@ -242,8 +273,9 @@ public class ElevatorSystemView extends JFrame {
       }
     });
 
-    stopButton = new JButton("Shut Down");
-    stopButton.addActionListener(e -> {
+    shutDownButton = new JButton("Shut Down");
+    shutDownButton.addActionListener(e -> {
+      handleShutDown();
       controller.shutDownSystem();
       updateSystemStatus();
       updateMonitorPanel();
@@ -253,6 +285,20 @@ public class ElevatorSystemView extends JFrame {
         updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
       }
       JOptionPane.showMessageDialog(this, "All elevators are now grounded and out of service.");
+    });
+
+    restartButton = new JButton("Restart");
+    restartButton.addActionListener(e -> {
+      handleRestart();
+      controller.startSystem();
+      updateSystemStatus();
+      updateMonitorPanel();
+      updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
+      JOptionPane.showMessageDialog(this, "All elevators are now restart.");
     });
 
     exitButton = new JButton("Exit");
@@ -281,13 +327,18 @@ public class ElevatorSystemView extends JFrame {
         ElevatorReport report = controller.getElevatorReport(i);
         updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
       }
-      JOptionPane.showMessageDialog(this, "Request sent from floor " + fromFloor + " to floor " + toFloor);
+      JOptionPane.showMessageDialog(this,
+          "Request sent from floor " + fromFloor + " to floor " + toFloor);
     });
+
+    GridBagConstraints gbc = new GridBagConstraints();
+    // Initially, the restart button is not visible
+    restartButton.setVisible(false);
 
     // GridBagLayout settings
     gbc.gridx = 0;
-    gbc.gridy = GridBagConstraints.RELATIVE;  // This auto-increments the gridy value
-    gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill its display area horizontally
+    gbc.gridy = GridBagConstraints.RELATIVE;  // Auto-increments the gridy value
+    gbc.fill = GridBagConstraints.HORIZONTAL; // Display area horizontally
     gbc.insets = new Insets(5, 5, 5, 5); // Padding
 
     // Add components to the panel
@@ -295,6 +346,8 @@ public class ElevatorSystemView extends JFrame {
     controlPanel.add(stepButton, gbc);
     controlPanel.add(stopButton, gbc);
     controlPanel.add(exitButton, gbc);
+    controlPanel.add(shutDownButton, gbc);
+    controlPanel.add(restartButton, gbc);
     controlPanel.add(new JLabel("From Floor:"), gbc);
     controlPanel.add(fromFloorDropdown, gbc);
     controlPanel.add(new JLabel("To Floor:"), gbc);
@@ -302,6 +355,22 @@ public class ElevatorSystemView extends JFrame {
     controlPanel.add(sendRequestButton, gbc);
 
     add(controlPanel, BorderLayout.EAST);
+  }
+
+  private void handleShutDown() {
+    controller.shutDownSystem();
+    updateSystemStatus();
+    updateMonitorPanel();
+    updateElevatorDisplays();
+    restartButton.setVisible(true);  // Make the restart button visible after shutdown
+  }
+
+  private void handleRestart() {
+    controller.startSystem();  // Assuming this resets the system to a fresh active state
+    updateSystemStatus();
+    updateMonitorPanel();
+    updateElevatorDisplays();
+    restartButton.setVisible(false);  // Hide the restart button after the system has restarted
   }
 
   private void createDemonstratePanel(int numFloors, int numElevators) {
@@ -337,6 +406,13 @@ public class ElevatorSystemView extends JFrame {
     add(elevatorsPanel, BorderLayout.CENTER);
   }
 
+  /**
+   * Update the position of the elevator car in the elevator shaft.
+   *
+   * @param elevatorId the ID of the elevator
+   * @param currentFloor the current floor of the elevator
+   * @param doorOpen the status of the elevator door
+   */
   public void updateElevatorPosition(int elevatorId, int currentFloor, boolean doorOpen) {
     JPanel elevatorCar = elevatorCars.get(elevatorId);
     if (elevatorCar == null) {
