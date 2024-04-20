@@ -1,14 +1,27 @@
 package main;
 
 import controller.ElevatorControllerImpl;
-import view.ElevatorSystemView;
 import javax.swing.SwingUtilities;
+import view.ElevatorSystemView;
 
+/**
+ * Main class to start the elevator system.
+ * The program can be run with 3 arguments:
+ *                                          number of floors,
+ *                                          number of elevators,
+ *                                          and capacity per elevator.
+ * If no arguments are provided, the program will use default values.
+ */
 public class Main {
+  /**
+   * Main method to start the elevator system.
+   *
+   * @param args 3 arguments: number of floors, number of elevators, and capacity per elevator.
+   */
   public static void main(String[] args) {
     // Default values in case arguments are not provided or are invalid
     int numFloors = 10;
-    int numElevators = 2;
+    int numElevators = 5;
     int capacity = 3;
 
     // Check if the right number of arguments are passed
@@ -29,7 +42,8 @@ public class Main {
     }
 
     // Create the controller with the building parameters
-    ElevatorControllerImpl controller = new ElevatorControllerImpl(numFloors, numElevators, capacity);
+    ElevatorControllerImpl controller = new ElevatorControllerImpl(numFloors,
+        numElevators, capacity);
 
     // Start the view and pass the controller to it
     SwingUtilities.invokeLater(() -> new ElevatorSystemView(controller));
