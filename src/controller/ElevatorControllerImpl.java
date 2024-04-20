@@ -3,6 +3,8 @@ package controller;
 
 import building.Building;
 import building.BuildingReport;
+import elevator.Elevator;
+import elevator.ElevatorInterface;
 import elevator.ElevatorReport;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,36 @@ public class ElevatorControllerImpl {
    */
   public void stopSystem() {
     building.stopElevatorSystem();
+  }
+
+  /**
+   * This is method used to shut down the elevator system.
+   */
+  public void shutDownSystem() {
+    // Step 1: Stop the elevator system
+    building.stopElevatorSystem();
+
+    // Step 2: Loop until all elevators reach the ground floor
+    boolean allElevatorsGrounded = false;
+    while (!allElevatorsGrounded) {
+      allElevatorsGrounded = true;
+      for (int elevatorID = 0; elevatorID < building.getNumberOfElevators(); elevatorID++) {
+        ElevatorReport report = building.getElevatorReport(elevatorID);
+        if (report.getCurrentFloor() != 0) {
+          allElevatorsGrounded = false;
+        }
+      }
+      // Perform a system step if not all elevators are grounded
+      if (!allElevatorsGrounded) {
+        building.stepElevatorSystem();
+      }
+    }
+
+    // Step 3: Additional step to mark elevators as out of service
+    // This step ensures that all elevators are set to out of service at the ground floor
+    building.stepElevatorSystem();
+
+    System.out.println("All elevators are now grounded and out of service.");
   }
 
   /**

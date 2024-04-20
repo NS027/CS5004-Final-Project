@@ -31,6 +31,7 @@ public class ElevatorSystemView extends JFrame {
   private JButton stepButton;
   private JButton startButton;
   private JButton stopButton;
+  private JButton shutDownButton;
   private JButton nStepButton;
   private JButton exitButton;
   private JButton nRequestButton;
@@ -239,6 +240,19 @@ public class ElevatorSystemView extends JFrame {
         ElevatorReport report = controller.getElevatorReport(i);
         updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
       }
+    });
+
+    stopButton = new JButton("Shut Down");
+    stopButton.addActionListener(e -> {
+      controller.shutDownSystem();
+      updateSystemStatus();
+      updateMonitorPanel();
+      updateElevatorDisplays();
+      for (int i = 0; i < controller.getBuildingStatus().getNumberOfElevators(); i++) {
+        ElevatorReport report = controller.getElevatorReport(i);
+        updateElevatorPosition(i, report.getCurrentFloor(), report.isDoorClosed());
+      }
+      JOptionPane.showMessageDialog(this, "All elevators are now grounded and out of service.");
     });
 
     exitButton = new JButton("Exit");
