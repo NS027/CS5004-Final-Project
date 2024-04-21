@@ -1,73 +1,57 @@
 # Elevator System Simulator
 
 ## About/Overview
-This program is used to build a simulation of an elevator system. 
-The elevator system consists of a building with multiple floors and a set of elevators that move between these floors. 
-The program simulates the movement of the elevators in response to user requests. 
-The elevators can accept requests to move up to a certain floor at the bottom of the building, 
-or accept requests to move down to a certain floor at the top of the building.
+This program simulates an elevator system within a multi-floor building. It models the operation of elevators responding to user requests either to ascend from the ground floor or to descend from the top floor. The primary goal is to offer a visual and interactive simulation of elevator traffic management and behavior in response to various user-generated requests.
 
-The goal of the simulation is to simulate the simple elevator system and to provide a visual representation of the elevator movement.
-
-## List of Features
-- **start**: The elevator is default to at out of service status, it will start the system.
-- **step**: This is one step movement for the system.
-- **n step**: This is n steps movement for the system. n is a integer from user input.
-- **request**: It will send a request from 'from floor' to 'to floor'. The certain floor is acquired from user input.
-- **n request**: It will automatically generating n request where half is up and other is down. n is a integer from user input.
-- **stop**: The elevator is set to stopping status and will immediately moving to ground floor. It will not take any request.
-- **shutdown**: The elevator is set to out of service status and will immediately moving to ground floor. It will not take any request.
-- **restart**: The elevator will restart the system and set to running status.
-
+## Features
+- **Start**: Initializes the system, setting all elevators to operational status from an initial out-of-service state.
+- **Step**: Executes a single step in the simulation, representing a unit of time or operation within the system.
+- **N Steps**: Advances the simulation by a user-specified number of steps, allowing for extended observation of dynamics without manual input for each step.
+- **Request**: Sends a user-defined request from one floor to another, inputting specific start and destination floors.
+- **N Requests**: Automatically generates a specified number of requests, evenly split between ascent and descent.
+- **Stop**: Immediately sends all elevators to the ground floor and sets them to a non-operational state, halting further requests.
+- **Shutdown**: Moves all elevators to the ground floor and deactivates the system.
+- **Restart**: Reboots the system to operational status after a shutdown or stop.
 
 ## How To Run
 ### Running the JAR File
-1. Ensure Java is installed: Run `java -version` in your terminal. If Java is not installed, [download Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
-2. Navigate to the JAR file directory: `cd path/to/jar`.
-3. Execute the JAR file: `java -jar CS5004_Final_Project.jar [arguments]`.
-4. If no arguments are provided, the program will run with default values.
-5. Three arguments are required to run the program:
-    - `java -jar CS5004_Final_Project.jar [number of floors] [number of elevators] [number of requests]`.
+1. Ensure Java is installed by running `java -version` in your terminal. If not installed, download it from [Oracle's Java SE](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
+2. Navigate to the directory containing the JAR file: `cd path/to/jar`.
+3. Run the JAR file: `java -jar CS5004_Final_Project.jar [number of floors] [number of elevators] [number of requests]`.
     - Example: `java -jar CS5004_Final_Project.jar 10 2 10`.
 
-### Arguments
-- **number of floors** (`int`): The number of floors of the building.
-- **number of elevators** (`int`): The number of elevators of the building.
-- **number of request** (`int`): The maximum number of requests that one elevator can take each time.
+### Required Arguments
+- **number of floors** (`int`): Specifies the total floors in the building.
+- **number of elevators** (`int`): Indicates how many elevators are in the building.
+- **number of requests** (`int`): Sets the limit on simultaneous requests an elevator can handle.
 
 ## How to Use the Program
-1. Run the program using the instructions above.
-2. The program will display the current status of the elevator system.
-3. Click the button 'Start' to start the system.
-4. If there is no request, click the 'step' button continuously to see the elevator movement.
-5. From the dropdown menu, select the 'from floor' and 'to floor' to send a request.
-6. Click the 'send request' button to send the request.
-7. Click the 'stop' button to stop the elevator.
-8. Click the 'shutdown' button to shut down the elevator.
-9. The 'restart' button will show and click it to restart the system. Then it will disappear after the system is running.
-10. Entering a input of n and click the 'n step' button to move n steps.
-11. Entering a input of n and click the 'n request' button to generate n requests.
+1. Start the program using the above run instructions.
+2. The interface displays the current elevator statuses.
+3. Begin operation by clicking `Start`.
+4. To manually simulate elevator movement, click `Step` repeatedly or use `N Step` to progress multiple steps.
+5. Generate elevator requests using the dropdown menus for `from floor` and `to floor`, then send by clicking `send request`.
+6. Automatically generate requests by inputting the number of requests and clicking `Generate N requests`.
+7. Use `Stop` to halt all elevator activity or `Shutdown` to power down the system.
+8. Restart the system by clicking `Restart`, which only appears after a stop or shutdown.
+9. Exit the program via the 'exit' button.
 
 ## Design/Model Changes
-Document significant changes made from the initial design or previous versions. Explain why these changes were necessary.
-- **Version 1.0**:
-    - Initial release.
-- **Version 2.0**:
-    - **Change**: Description of what was changed.
-    - **Reason**: Explanation of why this change was made.
+### Version 2.0
+- Introduced a Controller and graphical View to enhance user interaction and system manageability.
+- **Rationale**: These components were added to visually represent the elevator operations and to facilitate easier user interaction with the simulation.
 
 ## Assumptions
-List assumptions made during the development and implementation:
-- **Assumption 1**: Detail the assumption and its justification.
-- **Assumption 2**: Detail the assumption and its justification.
+- Assumes that all elevators and the building's infrastructure operate without mechanical faults.
+- Assumes user interaction for request generation and system commands.
 
 ## Limitations
-Detail limitations of your program:
-- **Limitation 1**: Description of the limitation and under what circumstances it might affect users.
-- **Limitation 2**: Description of the limitation and under what circumstances it might affect users.
+- Elevators can only accept new requests from the top or bottom floors.
+- Requests are generated without a real-time algorithm, potentially affecting efficiency.
+- The system does not track elevator occupancy, limiting its realism.
 
 ## Citations
-Include references used during research and development. If no citations are necessary, indicate this explicitly.
-- **Citation Format**: Author(s). (Year). Title of document. [Format description]. Retrieved from http://...
-- If no external resources were used, state "No external citations were necessary for the development of this project."
+- Lee, A. (2024). [Java GUI Tutorial - Make a Login GUI]. Retrieved from [YouTube](https://www.youtube.com/watch?v=iE8tZ0hn2Ws&ab_channel=AlexLee).
+- Bro Code (2021). [Java GUI: Full Course ☕]. Retrieved from [YouTube](https://www.youtube.com/watch?v=Kmgo00avvEw&t=20s).
 
+No additional external resources were consulted for the development of this project beyond the above-listed citation.
